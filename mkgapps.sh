@@ -36,7 +36,26 @@ echo "|...|_|.||..._...||...|....|...|....._____|.|...............";
 echo "|_______||__|.|__||___|....|___|....|_______|...............";
 
 # Define paths && variables
-APP_DIRS="dynamic/FaceLock/arm/app/FaceLock dynamic/FaceLock/arm64/app/FaceLock dynamic/PrebuiltGmsCore/arm/priv-app/PrebuiltGmsCore dynamic/PrebuiltGmsCore/arm64/priv-app/PrebuiltGmsCore dynamic/SetupWizard/phone/priv-app/SetupWizard dynamic/SetupWizard/tablet/priv-app/SetupWizard dynamic/Velvet/arm/priv-app/Velvet dynamic/Velvet/arm64/priv-app/Velvet system/app/ChromeBookmarksSyncAdapter system/app/GoogleCalendarSyncAdapter system/app/GoogleContactsSyncAdapter system/app/GoogleTTS system/priv-app/GoogleBackupTransport system/priv-app/GoogleFeedback system/priv-app/GoogleLoginService system/priv-app/GoogleOneTimeInitializer system/priv-app/GooglePartnerSetup system/priv-app/GoogleServicesFramework system/priv-app/HotwordEnrollment system/priv-app/Phonesky"
+APPDIRS="dynamic/FaceLock/arm/app/FaceLock
+         dynamic/FaceLock/arm64/app/FaceLock
+         dynamic/PrebuiltGmsCore/arm/priv-app/PrebuiltGmsCore
+         dynamic/PrebuiltGmsCore/arm64/priv-app/PrebuiltGmsCore
+         dynamic/SetupWizard/phone/priv-app/SetupWizard
+         dynamic/SetupWizard/tablet/priv-app/SetupWizard
+         dynamic/Velvet/arm/priv-app/Velvet
+         dynamic/Velvet/arm64/priv-app/Velvet
+         system/app/ChromeBookmarksSyncAdapter
+         system/app/GoogleCalendarSyncAdapter
+         system/app/GoogleContactsSyncAdapter
+         system/app/GoogleTTS
+         system/priv-app/GoogleBackupTransport
+         system/priv-app/GoogleFeedback
+         system/priv-app/GoogleLoginService
+         system/priv-app/GoogleOneTimeInitializer
+         system/priv-app/GooglePartnerSetup
+         system/priv-app/GoogleServicesFramework
+         system/priv-app/HotwordEnrollment
+         system/priv-app/Phonesky"
 TOOLSDIR=$(realpath .)/tools
 GAPPSDIR=$(realpath .)/files
 FINALDIR=$(realpath .)/out
@@ -66,7 +85,7 @@ TARGETAPK=$TARGETDIR/$(basename "$TARGETDIR").apk
 BEGIN=$(date +%s)
 
 # Begin the magic
-for dirs in $APP_DIRS; do
+for dirs in $APPDIRS; do
   cd "$GAPPSDIR/${dirs}";
   dcapk 1> /dev/null 2>&1;
 done
@@ -81,7 +100,9 @@ cp -f "$FINALDIR"/"$ZIPNAME1" "$FINALDIR"/"$ZIPNAME2"
 # Define ending time
 END=$(date +%s)
 
+# All done
 echo " "
 echo "All done creating GApps!"
 echo "Total time elapsed: $(echo $(($END-$BEGIN)) | awk '{print int($1/60)"mins "int($1%60)"secs "}') ($(echo "$END - $BEGIN" | bc) seconds)"
 echo "Completed GApp zips are located in the '$FINALDIR' directory"
+cd
