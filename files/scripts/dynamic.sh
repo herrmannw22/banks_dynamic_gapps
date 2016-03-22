@@ -35,11 +35,6 @@ elif (echo "$device_architecture" | grep -qi "arm64"); then
   cp -rf $tmp_path/FaceLock/arm64/* /system
 fi
 
-# HotwordEnrollment
-if (echo "$device_architecture" | grep -qi "arm64"); then
-  cp -rf $tmp_path/HotwordEnrollment/arm64/* /system
-fi
-
 # Libs
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
   cp -rf $tmp_path/Libs/system/lib/* /system/lib

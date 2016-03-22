@@ -38,7 +38,6 @@ echo "|_______||__|.|__||___|....|___|....|_______|...............";
 # Define paths && variables
 APPDIRS="dynamic/FaceLock/arm/app/FaceLock
          dynamic/FaceLock/arm64/app/FaceLock
-         dynamic/HotwordEnrollment/arm64/priv-app/HotwordEnrollment
          dynamic/PrebuiltGmsCore/arm/priv-app/PrebuiltGmsCore
          dynamic/PrebuiltGmsCore/arm64/priv-app/PrebuiltGmsCore
          dynamic/SetupWizard/phone/priv-app/SetupWizard
@@ -55,6 +54,7 @@ APPDIRS="dynamic/FaceLock/arm/app/FaceLock
          system/priv-app/GoogleOneTimeInitializer
          system/priv-app/GooglePartnerSetup
          system/priv-app/GoogleServicesFramework
+         system/priv-app/HotwordEnrollment
          system/priv-app/Phonesky"
 TOOLSDIR=$(realpath .)/tools
 GAPPSDIR=$(realpath .)/files
