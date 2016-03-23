@@ -26,7 +26,7 @@ if [ -z "$device_architecture" ]; then
   device_architecture="$(file_getprop $rom_build_prop "ro.product.cpu.abi=")"
 fi
 
-is_tablet="$(grep "ro.build.characteristics" $rom_build_prop | grep tablet)"
+is_tablet="$(grep "ro.build.characteristics" $rom_build_prop | grep "tablet")"
 
 # FaceLock
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
