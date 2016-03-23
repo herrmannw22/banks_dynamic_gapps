@@ -92,9 +92,9 @@ elif (echo "$device_architecture" | grep -qi "arm64"); then
   ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/arm64/libjni_latinime.so
   ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm64/libjni_latinimegoogle.so
 elif (echo "$device_architecture" | grep -qi "x86"); then
-  mkdir -p /system/app/LatinIME/lib/arm
-  ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/arm/libjni_latinime.so
-  ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm/libjni_latinimegoogle.so
+  mkdir -p /system/app/LatinIME/lib/x86
+  ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/x86/libjni_latinime.so
+  ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86/libjni_latinimegoogle.so
 fi
 
 # Cleanup
