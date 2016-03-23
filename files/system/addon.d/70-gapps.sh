@@ -178,7 +178,7 @@ case "$1" in
       ln -sfn /system/lib/libfacelock_jni.so /system/app/FaceLock/lib/arm/libfacelock_jni.so
       ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/arm/libjni_latinime.so
       ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm/libjni_latinimegoogle.so
-    if (echo "$device_architecture" | grep -qi "arm64"); then
+    elif (echo "$device_architecture" | grep -qi "arm64"); then
       mkdir -p /system/app/FaceLock/lib/arm64
       mkdir -p /system/app/LatinIME/lib/arm64
       ln -sfn /system/lib64/libfacelock_jni.so /system/app/FaceLock/lib/arm64/libfacelock_jni.so

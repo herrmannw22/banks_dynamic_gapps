@@ -42,7 +42,7 @@ if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
   cp -rf $tmp_path/Libs/system/lib/* /system/lib
   mkdir -p /system/vendor/lib
   cp -rf $tmp_path/Libs/system/vendor/lib/* /system/vendor/lib
-if (echo "$device_architecture" | grep -qi "arm64"); then
+elif (echo "$device_architecture" | grep -qi "arm64"); then
   cp -rf $tmp_path/Libs/system/lib64/* /system/lib64
   mkdir -p /system/vendor/lib
   mkdir -p /system/vendor/lib64
@@ -56,7 +56,7 @@ fi
 # PrebuiltGmsCore
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
   cp -rf $tmp_path/PrebuiltGmsCore/arm/* /system
-if (echo "$device_architecture" | grep -qi "arm64"); then
+elif (echo "$device_architecture" | grep -qi "arm64"); then
   cp -rf $tmp_path/PrebuiltGmsCore/arm64/* /system
 elif (echo "$device_architecture" | grep -qi "x86"); then
   cp -rf $tmp_path/PrebuiltGmsCore/x86/* /system
@@ -72,7 +72,7 @@ fi
 # Velvet
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
   cp -rf $tmp_path/Velvet/arm/* /system
-if (echo "$device_architecture" | grep -qi "arm64"); then
+elif (echo "$device_architecture" | grep -qi "arm64"); then
   cp -rf $tmp_path/Velvet/arm64/* /system
 elif (echo "$device_architecture" | grep -qi "x86"); then
   cp -rf $tmp_path/Velvet/x86/* /system
@@ -85,7 +85,7 @@ if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
   ln -sfn /system/lib/libfacelock_jni.so /system/app/FaceLock/lib/arm/libfacelock_jni.so
   ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/arm/libjni_latinime.so
   ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm/libjni_latinimegoogle.so
-if (echo "$device_architecture" | grep -qi "arm64"); then
+elif (echo "$device_architecture" | grep -qi "arm64"); then
   mkdir -p /system/app/FaceLock/lib/arm64
   mkdir -p /system/app/LatinIME/lib/arm64
   ln -sfn /system/lib64/libfacelock_jni.so /system/app/FaceLock/lib/arm64/libfacelock_jni.so
