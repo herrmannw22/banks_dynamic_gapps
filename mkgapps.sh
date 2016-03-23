@@ -40,10 +40,12 @@ APPDIRS="dynamic/FaceLock/arm/app/FaceLock
          dynamic/FaceLock/arm64/app/FaceLock
          dynamic/PrebuiltGmsCore/arm/priv-app/PrebuiltGmsCore
          dynamic/PrebuiltGmsCore/arm64/priv-app/PrebuiltGmsCore
+         dynamic/PrebuiltGmsCore/x86/priv-app/PrebuiltGmsCore
          dynamic/SetupWizard/phone/priv-app/SetupWizard
          dynamic/SetupWizard/tablet/priv-app/SetupWizard
          dynamic/Velvet/arm/priv-app/Velvet
          dynamic/Velvet/arm64/priv-app/Velvet
+         dynamic/Velvet/x86/priv-app/Velvet
          system/app/ChromeBookmarksSyncAdapter
          system/app/GoogleCalendarSyncAdapter
          system/app/GoogleContactsSyncAdapter

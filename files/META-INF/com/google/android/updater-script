@@ -11,7 +11,7 @@ show_progress(1, 15);
 ui_print("Running version compatibility tests...");
 package_extract_file("scripts/checks.sh", "/tmp/checks.sh");
 set_perm(0, 0, 0777, "/tmp/checks.sh");
-assert((run_program("/tmp/checks.sh") == 0) || abort("GApps package can't be installed..incompatible Android verson / cpu architecture...aborting"););
+assert((run_program("/tmp/checks.sh") == 0) || abort("GApps package can't be installed..incompatible Android verson...aborting"););
 show_progress(1, 15);
 ui_print("Removing conflicting apks...");
 delete_recursive("/system/app/BrowserProviderProxy","/system/app/PartnerBookmarksProvider","/system/app/Provision","/system/app/QuickSearchBox","/system/priv-app/BrowserProviderProxy","/system/priv-app/PartnerBookmarksProvider","/system/priv-app/Provision","/system/priv-app/QuickSearchBox");
