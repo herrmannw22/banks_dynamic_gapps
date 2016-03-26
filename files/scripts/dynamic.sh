@@ -13,20 +13,19 @@
 #    GNU General Public License for more details.
 
 # Functions & variables
-tmp_path=/data/local/dynamic
+tmp_path=/tmp/dynamic
 
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 
 rom_build_prop=/system/build.prop
 
 device_architecture="$(file_getprop $rom_build_prop "ro.product.cpu.abilist=")"
-
 # If the recommended field is empty, fall back to the deprecated one
 if [ -z "$device_architecture" ]; then
   device_architecture="$(file_getprop $rom_build_prop "ro.product.cpu.abi=")"
 fi
 
-is_tablet="$(grep "ro.build.characteristics" $rom_build_prop | grep "tablet")"
+is_tablet="$(file_getprop $rom_build_prop "ro.build.characteristics" | grep "tablet")"
 
 # FaceLock
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
@@ -96,6 +95,3 @@ elif (echo "$device_architecture" | grep -qi "x86"); then
   ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/x86/libjni_latinime.so
   ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86/libjni_latinimegoogle.so
 fi
-
-# Cleanup
-rm -rf $tmp_path

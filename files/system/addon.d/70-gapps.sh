@@ -25,7 +25,6 @@ file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 rom_build_prop=/system/build.prop
 
 device_architecture="$(file_getprop $rom_build_prop "ro.product.cpu.abilist=")"
-
 # If the recommended field is empty, fall back to the deprecated one
 if [ -z "$device_architecture" ]; then
   device_architecture="$(file_getprop $rom_build_prop "ro.product.cpu.abi=")"
