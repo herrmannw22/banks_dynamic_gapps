@@ -1,6 +1,19 @@
 #!/sbin/sh
 # Based on osm0sis's shell installer script with bits from Chainfire's SuperSU shell installer script
 
+# This file contains parts from the scripts taken from the TK GApps Project by TKruzze and osmOsis.
+# This file contains parts from the scripts taken from the Open GApps Project by mfonville.
+#
+# This script is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# These scripts are distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
 # Define variables & functions
 outfd=/proc/self/fd/$2
 
@@ -19,22 +32,42 @@ is_mounted() {
 }
 
 zipfile=$3
-
-package_extract_file() { unzip -o "$zipfile" "$1" -p > "$2"; }
 package_extract_dir() { unzip -o "$zipfile" "$1/*" -d /; }
-
-abort() { ui_print "$*"; exit 1; }
-assert() {
-  until [ ! "$1" ]; do
-    $1;
-    test $? == 1 && abort "GApps package can't be installed..incompatible Android verson...aborting($1)";
-    shift;
-  done;
-}
 
 set_perm() {
   chown "$1:$2" "$4"
   chmod "$3" "$4"
+}
+
+file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
+
+rom_build_prop=/system/build.prop
+
+rom_version_required=6.0
+rom_version_installed="$(file_getprop $rom_build_prop "ro.build.version.release")"
+
+set_metadata_recursive() {
+  dir="$1";
+  shift;
+  until [ ! "$2" ]; do
+    case $1 in
+      uid) chown -R $2 $dir;;
+      gid) chown -R :$2 $dir;;
+      dmode) find "$dir" -type d -exec chmod $2 {} +;;
+      fmode) find "$dir" -type f -exec chmod $2 {} +;;
+      capabilities) ;;
+      selabel)
+        for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
+          find "$dir" -exec LD_LIBRARY_PATH=/system/lib $i chcon -h $2 {} +;
+          find "$dir" -exec LD_LIBRARY_PATH=/system/lib $i chcon $2 {} +;
+        done;
+        find "$dir" -exec chcon -h $2 '{}' +;
+        find "$dir" -exec chcon $2 '{}' +;
+      ;;
+      *) ;;
+    esac;
+    shift 2;
+  done;
 }
 
 # Start installation
@@ -48,9 +81,13 @@ ui_print "Mounting /system..."
 mount /system
 
 ui_print "Checking for correct Android version..."
-package_extract_file scripts/version.sh /tmp/version.sh
-set_perm 0 0 0777 /tmp/version.sh
-assert /tmp/version.sh
+# Prevent installation of incorrect gapps version
+if [ -z "${rom_version_installed##*$rom_version_required*}" ]; then
+  ui_print "ROM and GApps versions match...proceeding"
+else
+  ui_print "ROM and GApps versions don't match...aborting"
+  exit 1
+fi
 
 ui_print "Removing conflicting apks..."
 rm -rf "/system/app/BrowserProviderProxy" "/system/app/PartnerBookmarksProvider" "/system/app/Provision" "/system/app/QuickSearchBox" "/system/priv-app/BrowserProviderProxy" "/system/priv-app/PartnerBookmarksProvider" "/system/priv-app/Provision" "/system/priv-app/QuickSearchBox"
@@ -59,14 +96,14 @@ ui_print "Installing Dynamic GApps..."
 package_extract_dir system
 package_extract_dir dynamic
 mv -f /dynamic /tmp/dynamic
-package_extract_file scripts/dynamic.sh /tmp/dynamic/dynamic.sh
 set_perm 0 0 0777 /tmp/dynamic/dynamic.sh
 /tmp/dynamic/dynamic.sh
 
 ui_print "Setting permissions..."
-package_extract_file scripts/permission.sh /tmp/permission.sh
-set_perm 0 0 0777 /tmp/permission.sh
-/tmp/permission.sh
+# Change pittpatt folders to root:shell per Google Factory Settings
+find "/system/vendor/pittpatt" -type d -exec chown 0.2000 '{}' \;
+# Set metadata
+set_metadata_recursive "/system/addon.d" "/system/app" "/system/etc/permissions" "/system/etc/preferred-apps" "/system/etc/sysconfig" "system/etc/updatecmds" "/system/framework" "/system/lib" "/system/lib64" "/system/priv-app" "/system/usr/srec" "/system/vendor/lib" "/system/vendor/lib64" "/system/vendor/pittpatt"
 
 ui_print "Unmounting /system..."
 umount /system
