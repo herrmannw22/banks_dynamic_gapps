@@ -48,8 +48,7 @@ elif (echo "$device_architecture" | grep -qi "arm64"); then
   cp -rf $tmp_path/Libs/system/vendor/lib/* /system/vendor/lib
   cp -rf $tmp_path/Libs/system/vendor/lib64/* /system/vendor/lib64
 elif (echo "$device_architecture" | grep -qi "x86"); then
-  cp -f $tmp_path/Libs/system/lib/libjni_latinime.so /system/lib
-  cp -f $tmp_path/Libs/system/lib/libjni_latinimegoogle.so /system/lib
+  cp -rf $tmp_path/Libs/system/libx86/* /system/lib
 fi
 
 # PrebuiltGmsCore
@@ -82,16 +81,19 @@ if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
   mkdir -p /system/app/FaceLock/lib/arm
   mkdir -p /system/app/LatinIME/lib/arm
   ln -sfn /system/lib/libfacelock_jni.so /system/app/FaceLock/lib/arm/libfacelock_jni.so
+  ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm/libjni_keyboarddecoder.so
   ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/arm/libjni_latinime.so
   ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm/libjni_latinimegoogle.so
 elif (echo "$device_architecture" | grep -qi "arm64"); then
   mkdir -p /system/app/FaceLock/lib/arm64
   mkdir -p /system/app/LatinIME/lib/arm64
   ln -sfn /system/lib64/libfacelock_jni.so /system/app/FaceLock/lib/arm64/libfacelock_jni.so
+  ln -sfn /system/lib64/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm64/libjni_keyboarddecoder.so
   ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/arm64/libjni_latinime.so
   ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm64/libjni_latinimegoogle.so
 elif (echo "$device_architecture" | grep -qi "x86"); then
   mkdir -p /system/app/LatinIME/lib/x86
+  ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/x86/libjni_keyboarddecoder.so
   ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/x86/libjni_latinime.so
   ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86/libjni_latinimegoogle.so
 fi
