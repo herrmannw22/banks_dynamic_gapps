@@ -36,6 +36,13 @@ elif (echo "$device_architecture" | grep -qi "arm64"); then
   cp -rf $tmp_path/FaceLock/vendor/* /system/vendor
 fi
 
+# GoogleTTS
+if (echo "$device_architecture" | grep -qi "x86"); then
+  cp -rf $tmp_path/GoogleTTS/x86/* /system
+else
+  cp -rf $tmp_path/GoogleTTS/arm/* /system
+fi
+
 # Libs
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
   cp -rf $tmp_path/Libs/system/lib/* /system/lib
