@@ -27,8 +27,6 @@ fi
 
 is_tablet="$(file_getprop $rom_build_prop "ro.build.characteristics" | grep "tablet")"
 
-is_fugu="$(file_getprop $rom_build_prop "ro.product.name" | grep "fugu")"
-
 # FaceLock
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
   cp -rf $tmp_path/FaceLock/arm/* /system
@@ -67,11 +65,6 @@ if [ -n "$is_tablet" ]; then
   cp -rf $tmp_path/SetupWizard/tablet/* /system
 else
   cp -rf $tmp_path/SetupWizard/phone/* /system
-fi
-
-# Fugu doesn't want SetupWizard
-if [ -n "$is_fugu" ]; then
-  rm -rf /system/priv-app/SetupWizard
 fi
 
 # Velvet
