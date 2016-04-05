@@ -27,6 +27,14 @@ fi
 
 is_tablet="$(file_getprop $rom_build_prop "ro.build.characteristics" | grep "tablet")"
 
+is_fugu="$(file_getprop $rom_build_prop "ro.product.name" | grep "fugu")"
+
+# Fugu permissions / jars
+if [ -n "$is_fugu" ]; then
+  cp -f $tmp_path/etc/permissions/com.google.android.pano.v1.xml system/etc/permissions
+  cp -f $tmp_path/framework/com.google.android.pano.v1.jar system/framework
+fi
+
 # FaceLock
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64" | grep -qiv "x86"); then
   cp -rf $tmp_path/FaceLock/arm/* /system
