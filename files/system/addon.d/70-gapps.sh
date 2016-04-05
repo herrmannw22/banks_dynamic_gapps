@@ -52,10 +52,12 @@ cat <<EOF
   framework/com.google.widevine.software.drm.jar
   lib/libfacelock_jni.so
   lib/libfilterpack_facedetect.so
+  lib/libjni_keyboarddecoder.so
   lib/libjni_latinime.so
   lib/libjni_latinimegoogle.so
   lib64/libfacelock_jni.so
   lib64/libfilterpack_facedetect.so
+  lib64/libjni_keyboarddecoder.so
   lib64/libjni_latinime.so
   lib64/libjni_latinimegoogle.so
   priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
@@ -171,18 +173,25 @@ case "$1" in
     rm -rf /system/priv-app/QuickSearchBox
 
     # Make required symbolic links
-    if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64"); then
+    if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64" | grep -qiv "x86"); then
       mkdir -p /system/app/FaceLock/lib/arm
       mkdir -p /system/app/LatinIME/lib/arm
       ln -sfn /system/lib/libfacelock_jni.so /system/app/FaceLock/lib/arm/libfacelock_jni.so
+      ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm/libjni_keyboarddecoder.so
       ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/arm/libjni_latinime.so
       ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm/libjni_latinimegoogle.so
     elif (echo "$device_architecture" | grep -qi "arm64"); then
       mkdir -p /system/app/FaceLock/lib/arm64
       mkdir -p /system/app/LatinIME/lib/arm64
       ln -sfn /system/lib64/libfacelock_jni.so /system/app/FaceLock/lib/arm64/libfacelock_jni.so
+      ln -sfn /system/lib64/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm64/libjni_keyboarddecoder.so
       ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/arm64/libjni_latinime.so
       ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm64/libjni_latinimegoogle.so
+    elif (echo "$device_architecture" | grep -qi "x86"); then
+      mkdir -p /system/app/LatinIME/lib/x86
+      ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/x86/libjni_keyboarddecoder.so
+      ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/x86/libjni_latinime.so
+      ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86/libjni_latinimegoogle.so
     fi
   ;;
 esac
