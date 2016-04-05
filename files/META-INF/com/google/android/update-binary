@@ -96,9 +96,9 @@ rm -rf "/system/app/BrowserProviderProxy" "/system/app/PartnerBookmarksProvider"
 
 ui_print "Installing Dynamic GApps..."
 unzip -o "$zipfile" "system/*" -d /
-unzip -o "$zipfile" "dynamic/*" -d /data/local
-set_perm 0 0 0777 /data/local/dynamic/dynamic.sh
-/data/local/dynamic/dynamic.sh
+unzip -o "$zipfile" "dynamic/*" -d /data
+set_perm 0 0 0777 /data/dynamic/dynamic.sh
+/data/dynamic/dynamic.sh
 
 ui_print "Setting permissions..."
 # Change pittpatt folders to root:shell per Google Factory Settings

@@ -13,7 +13,7 @@
 # GNU General Public License for more details.
 
 # Functions & variables
-tmp_path=/data/local/dynamic
+tmp_path=/data/dynamic
 
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 
