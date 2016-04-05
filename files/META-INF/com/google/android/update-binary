@@ -32,7 +32,6 @@ is_mounted() {
 }
 
 zipfile=$3
-package_extract_dir() { unzip -o "$zipfile" "$1/*" -d /; }
 
 set_perm() {
   chown "$1:$2" "$4"
@@ -76,9 +75,11 @@ ui_print "BaNkS Dynamic GApps 6.x.x"
 ui_print "*************************"
 
 if is_mounted /system; then umount /system; fi
+if is_mounted /data; then umount /data; fi
 
-ui_print "Mounting /system..."
+ui_print "Mounting /system and /data..."
 mount /system
+mount /data
 
 ui_print "Checking for correct Android version..."
 # Prevent installation of incorrect gapps version
@@ -94,11 +95,10 @@ ui_print "Removing conflicting apks..."
 rm -rf "/system/app/BrowserProviderProxy" "/system/app/PartnerBookmarksProvider" "/system/app/Provision" "/system/app/QuickSearchBox" "/system/priv-app/BrowserProviderProxy" "/system/priv-app/PartnerBookmarksProvider" "/system/priv-app/Provision" "/system/priv-app/QuickSearchBox"
 
 ui_print "Installing Dynamic GApps..."
-package_extract_dir system
-package_extract_dir dynamic
-mv -f /dynamic /tmp/dynamic
-set_perm 0 0 0777 /tmp/dynamic/dynamic.sh
-/tmp/dynamic/dynamic.sh
+unzip -o "$zipfile" "system/*" -d /
+unzip -o "$zipfile" "dynamic/*" -d /data/local
+set_perm 0 0 0777 /data/local/dynamic/dynamic.sh
+/data/local/dynamic/dynamic.sh
 
 ui_print "Setting permissions..."
 # Change pittpatt folders to root:shell per Google Factory Settings
@@ -106,7 +106,8 @@ find "/system/vendor/pittpatt" -type d -exec chown 0.2000 '{}' \;
 # Set metadata
 set_metadata_recursive "/system/addon.d" "/system/app" "/system/etc/permissions" "/system/etc/preferred-apps" "/system/etc/sysconfig" "system/etc/updatecmds" "/system/framework" "/system/lib" "/system/lib64" "/system/priv-app" "/system/usr/srec" "/system/vendor/lib" "/system/vendor/lib64" "/system/vendor/pittpatt"
 
-ui_print "Unmounting /system..."
+ui_print "Unmounting /system and /data..."
 umount /system
+umount /data
 
 ui_print "Installation complete!"

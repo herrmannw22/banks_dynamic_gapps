@@ -13,7 +13,7 @@
 # GNU General Public License for more details.
 
 # Functions & variables
-tmp_path=/tmp/dynamic
+tmp_path=/data/local/dynamic
 
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 
@@ -121,3 +121,6 @@ elif (echo "$device_architecture" | grep -qi "x86_64"); then
   ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/x86_64/libjni_latinime.so
   ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86_64/libjni_latinimegoogle.so
 fi
+
+# Cleanup
+rm -rf $tmp_path
