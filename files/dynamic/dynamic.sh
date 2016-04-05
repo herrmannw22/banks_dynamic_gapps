@@ -31,8 +31,8 @@ is_fugu="$(file_getprop $rom_build_prop "ro.product.name" | grep "fugu")"
 
 # Fugu permissions / jars
 if [ -n "$is_fugu" ]; then
-  cp -f $tmp_path/etc/permissions/com.google.android.pano.v1.xml system/etc/permissions
-  cp -f $tmp_path/framework/com.google.android.pano.v1.jar system/framework
+  cp -f $tmp_path/etc/permissions/com.google.android.pano.v1.xml /system/etc/permissions
+  cp -f $tmp_path/framework/com.google.android.pano.v1.jar /system/framework
 fi
 
 # FaceLock
