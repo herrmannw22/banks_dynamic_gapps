@@ -30,6 +30,8 @@ if [ -z "$device_architecture" ]; then
   device_architecture="$(file_getprop $rom_build_prop "ro.product.cpu.abi=")"
 fi
 
+is_fugu="$(file_getprop $rom_build_prop "ro.product.name" | grep "fugu")"
+
 list_files() {
 cat <<EOF
   app/ChromeBookmarksSyncAdapter/ChromeBookmarksSyncAdapter.apk
@@ -173,6 +175,11 @@ case "$1" in
     rm -rf /system/priv-app/PartnerBookmarksProvider
     rm -rf /system/priv-app/Provision
     rm -rf /system/priv-app/QuickSearchBox
+
+    # Fugu doesn't want SetupWizard
+    if [ -n "$is_fugu" ]; then
+      rm -rf /system/priv-app/SetupWizard
+    fi
 
     # Make required symbolic links
     if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64" | grep -qiv "x86"); then

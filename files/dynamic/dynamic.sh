@@ -86,6 +86,11 @@ else
   cp -rf $tmp_path/SetupWizard/phone/* /system
 fi
 
+# Fugu doesn't want SetupWizard
+if [ -n "$is_fugu" ]; then
+  rm -rf /system/priv-app/SetupWizard
+fi
+
 # Velvet
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64" | grep -qiv "x86"); then
   cp -rf $tmp_path/Velvet/arm/* /system
