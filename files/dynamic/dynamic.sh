@@ -27,7 +27,7 @@ fi
 
 is_tablet="$(file_getprop $rom_build_prop "ro.build.characteristics" | grep "tablet")"
 
-is_fugu="$(file_getprop $rom_build_prop "ro.product.name" | grep "fugu")"
+is_fugu="$(file_getprop $rom_build_prop "ro.product.name" | grep -i "fugu")"
 
 # Fugu permissions / jars
 if [ -n "$is_fugu" ]; then
