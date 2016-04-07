@@ -88,6 +88,7 @@ if [ -z "${rom_version_installed##*$rom_version_required*}" ]; then
 else
   ui_print "ROM and GApps versions don't match...aborting"
   umount /system
+  umount /data
   exit 1
 fi
 
