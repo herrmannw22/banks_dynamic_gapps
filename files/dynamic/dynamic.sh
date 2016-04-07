@@ -53,19 +53,19 @@ fi
 
 # Libs
 if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64" | grep -qiv "x86"); then
-  cp -rf $tmp_path/Libs/system/lib/* /system/lib
+  cp -rf $tmp_path/Libs/lib/* /system/lib
   mkdir -p /system/vendor/lib
-  cp -rf $tmp_path/Libs/system/vendor/lib/* /system/vendor/lib
+  cp -rf $tmp_path/Libs/vendor/lib/* /system/vendor/lib
 elif (echo "$device_architecture" | grep -qi "arm64"); then
-  cp -rf $tmp_path/Libs/system/lib64/* /system/lib64
+  cp -rf $tmp_path/Libs/lib64/* /system/lib64
   mkdir -p /system/vendor/lib
   mkdir -p /system/vendor/lib64
-  cp -rf $tmp_path/Libs/system/vendor/lib/* /system/vendor/lib
-  cp -rf $tmp_path/Libs/system/vendor/lib64/* /system/vendor/lib64
+  cp -rf $tmp_path/Libs/vendor/lib/* /system/vendor/lib
+  cp -rf $tmp_path/Libs/vendor/lib64/* /system/vendor/lib64
 elif (echo "$device_architecture" | grep -i "x86" | grep -qiv "x86_64"); then
-  cp -rf $tmp_path/Libs/system/libx86/* /system/lib
+  cp -rf $tmp_path/Libs/libx86/* /system/lib
 elif (echo "$device_architecture" | grep -qi "x86_64"); then
-  cp -rf $tmp_path/Libs/system/libx86_64/* /system/lib64
+  cp -rf $tmp_path/Libs/libx86_64/* /system/lib64
 fi
 
 # PrebuiltGmsCore
