@@ -4,33 +4,13 @@
 # /system/addon.d/70-gapps.sh
 #
 
-# This file contains parts from the scripts taken from the Open GApps Project by mfonville.
-#
-# The Open GApps scripts are free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# These scripts are distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
 # Execute
 . /tmp/backuptool.functions
 
 # Functions & variables
-file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
+arch=$(cat /system/build.prop | grep -m 1 "ro.product.cpu.abi=")
 
-rom_build_prop=/system/build.prop
-
-device_architecture="$(file_getprop $rom_build_prop "ro.product.cpu.abilist=")"
-# If the recommended field is empty, fall back to the deprecated one
-if [ -z "$device_architecture" ]; then
-  device_architecture="$(file_getprop $rom_build_prop "ro.product.cpu.abi=")"
-fi
-
-is_fugu="$(file_getprop $rom_build_prop "ro.product.name" | grep -i "fugu")"
+prod_dev=$(cat /system/build.prop | grep -m 1 "ro.product.device=")
 
 list_files() {
 cat <<EOF
@@ -177,31 +157,31 @@ case "$1" in
     rm -rf /system/priv-app/QuickSearchBox
 
     # Fugu doesn't want SetupWizard
-    if [ -n "$is_fugu" ]; then
+    if (echo "$prod_dev" | grep -qi "fugu"); then
       rm -rf /system/priv-app/SetupWizard
     fi
 
     # Make required symbolic links
-    if (echo "$device_architecture" | grep -i "armeabi" | grep -qiv "arm64" | grep -qiv "x86"); then
+    if (echo "$arch" | grep -qi "armeabi"); then
       mkdir -p /system/app/FaceLock/lib/arm
       mkdir -p /system/app/LatinIME/lib/arm
       ln -sfn /system/lib/libfacelock_jni.so /system/app/FaceLock/lib/arm/libfacelock_jni.so
       ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm/libjni_keyboarddecoder.so
       ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/arm/libjni_latinime.so
       ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm/libjni_latinimegoogle.so
-    elif (echo "$device_architecture" | grep -qi "arm64"); then
+    elif (echo "$arch" | grep -qi "arm64"); then
       mkdir -p /system/app/FaceLock/lib/arm64
       mkdir -p /system/app/LatinIME/lib/arm64
       ln -sfn /system/lib64/libfacelock_jni.so /system/app/FaceLock/lib/arm64/libfacelock_jni.so
       ln -sfn /system/lib64/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm64/libjni_keyboarddecoder.so
       ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/arm64/libjni_latinime.so
       ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm64/libjni_latinimegoogle.so
-    elif (echo "$device_architecture" | grep -i "x86" | grep -qiv "x86_64"); then
+    elif (echo "$arch" | grep -i "x86" | grep -qiv "x86_64"); then
       mkdir -p /system/app/LatinIME/lib/x86
       ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/x86/libjni_keyboarddecoder.so
       ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/x86/libjni_latinime.so
       ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86/libjni_latinimegoogle.so
-    elif (echo "$device_architecture" | grep -qi "x86_64"); then
+    elif (echo "$arch" | grep -qi "x86_64"); then
       mkdir -p /system/app/LatinIME/lib/x86_64
       ln -sfn /system/lib64/libjni_keyboarddecoder.so /system/app/LatinIME/lib/x86_64/libjni_keyboarddecoder.so
       ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/x86_64/libjni_latinime.so
