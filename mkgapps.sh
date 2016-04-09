@@ -97,7 +97,7 @@ cd "$GAPPSDIR"
 zip -q -r -9 "$ZIPNAME1" ./*
 mv -f "$ZIPNAME1" "$TOOLSDIR"
 cd "$TOOLSDIR"
-./inc.signapk.sh -q sign "$ZIPNAME1" "$ZIPNAME1"
+./signapk.sh -q sign "$ZIPNAME1"
 mv -f "$ZIPNAME1" "$FINALDIR"
 cp -f "$FINALDIR"/"$ZIPNAME1" "$FINALDIR"/"$ZIPNAME2"
 
