@@ -72,7 +72,6 @@ ZIPNAME1="$ZIPNAME1TITLE"_"$ZIPNAME1VERSION"_"$ZIPNAME1DATE".zip
 ZIPNAME2="$ZIPNAME2TITLE"_"$ZIPNAME2VERSION".zip
 
 dcapk() {
-export PATH=$TOOLSDIR:$PATH
 TARGETDIR=$(realpath .)
 TARGETAPK=$TARGETDIR/$(basename "$TARGETDIR").apk
   unzip -q -o "$TARGETAPK" -d "$TARGETDIR" "lib/*"
@@ -89,15 +88,23 @@ TARGETAPK=$TARGETDIR/$(basename "$TARGETDIR").apk
 BEGIN=$(date +%s)
 
 # Begin the magic
+export PATH=$TOOLSDIR:$PATH
+
 for dirs in $APPDIRS; do
   cd "$GAPPSDIR/${dirs}";
   dcapk 1> /dev/null 2>&1;
 done
+
 cd "$GAPPSDIR"
-zip -q -r -9 "$ZIPNAME1" ./*
+7za a -tzip -r "$ZIPNAME1" ./* > /dev/null
 mv -f "$ZIPNAME1" "$TOOLSDIR"
 cd "$TOOLSDIR"
-./signapk.sh -q sign "$ZIPNAME1"
+java -Xmx2048m -jar signapk.jar -w testkey.x509.pem testkey.pk8 "$ZIPNAME1" "$ZIPNAME1".signed
+rm -f "$ZIPNAME1"
+zipadjust "$ZIPNAME1".signed "$ZIPNAME1".fixed > /dev/null
+rm -f "$ZIPNAME1".signed
+java -Xmx2048m -jar minsignapk.jar testkey.x509.pem testkey.pk8 "$ZIPNAME1".fixed "$ZIPNAME1"
+rm -f "$ZIPNAME1".fixed
 mv -f "$ZIPNAME1" "$FINALDIR"
 cp -f "$FINALDIR"/"$ZIPNAME1" "$FINALDIR"/"$ZIPNAME2"
 
