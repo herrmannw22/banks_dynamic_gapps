@@ -62,6 +62,9 @@ ui_print "*************************"
 ui_print "BaNkS Dynamic GApps 6.x.x"
 ui_print "*************************"
 
+ui_print "Setting recovery to SELinux permissive..."
+setenforce 0
+
 ui_print "Mounting /system..."
 mount /system
 
