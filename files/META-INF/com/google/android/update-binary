@@ -16,9 +16,11 @@
 # GNU General Public License for more details.
 
 # Define variables & functions
+outfd=/proc/self/fd/$2
+
 ui_print() {
-  echo -n -e "ui_print $1\n" >> /proc/self/fd/$2
-  echo -n -e "ui_print\n" >> /proc/self/fd/$2
+  echo -n -e "ui_print $1\n" >> $outfd
+  echo -n -e "ui_print\n" >> $outfd
 }
 
 zipfile=$3
