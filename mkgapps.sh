@@ -37,7 +37,6 @@ echo "|_______||__|.|__||___|....|___|....|_______|...............";
 
 # Define paths && variables
 APPDIRS="dynamic/FaceLock/arm/app/FaceLock
-         dynamic/FaceLock/arm64/app/FaceLock
          dynamic/GoogleTTS/arm/app/GoogleTTS
          dynamic/GoogleTTS/x86/app/GoogleTTS
          dynamic/PrebuiltGmsCore/arm/priv-app/PrebuiltGmsCore
