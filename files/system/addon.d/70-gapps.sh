@@ -24,7 +24,7 @@ file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 
 rom_build_prop=/system/build.prop
 
-arch=$(file_getprop $rom_build_prop "ro.product.cpu.abi")
+arch=$(file_getprop $rom_build_prop "ro.product.cpu.abi=")
 
 prod_dev=$(file_getprop $rom_build_prop "ro.product.device")
 

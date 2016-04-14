@@ -109,7 +109,7 @@ rom_build_prop=/system/build.prop
 system_sdk=$(file_getprop $rom_build_prop "ro.build.version.sdk")
 gapps_sdk=23
 
-arch=$(file_getprop $rom_build_prop "ro.product.cpu.abi")
+arch=$(file_getprop $rom_build_prop "ro.product.cpu.abi=")
 
 set_metadata_recursive() {
   LD_LIBRARY_PATH=$systemlib;
