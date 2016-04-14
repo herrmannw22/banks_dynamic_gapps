@@ -163,6 +163,8 @@ ui_print "Setting system lib path..."
 # Set system lib path
 if (echo "$arch" | grep -qi "arm64"); then
   systemlib=/system/lib64
+elif (echo "$arch" | grep -qi "x86_64"); then
+  systemlib=/system/lib64
 else
   systemlib=/system/lib
 fi
