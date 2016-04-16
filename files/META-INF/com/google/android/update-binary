@@ -1,4 +1,5 @@
 #!/sbin/sh
+
 # Based on osm0sis's shell installer script with bits from Chainfire's SuperSU shell installer script
 
 # This file contains parts from the scripts taken from the TK GApps Project by TKruzze and osmOsis.
@@ -106,22 +107,22 @@ set_metadata_recursive() {
 
 ui_print "Setting permissions..."
 # Change pittpatt folders to root:shell per Google Factory Settings
-find "/system/vendor/pittpatt" -type d -exec chown 0.2000 '{}' \; 1>/dev/null 2>/dev/null
+find "/system/vendor/pittpatt" -type d -exec chown 0.2000 '{}' \;
 # Set metadata
-set_metadata_recursive "/system/addon.d" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/etc/permissions" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/etc/preferred-apps" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/etc/sysconfig" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "system/etc/updatecmds" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/framework" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/priv-app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/usr/srec" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/vendor/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/vendor/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
-set_metadata_recursive "/system/vendor/pittpatt" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/addon.d" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/etc/permissions" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/etc/preferred-apps" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/etc/sysconfig" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "system/etc/updatecmds" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/framework" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/priv-app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/usr/srec" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/vendor/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/vendor/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/vendor/pittpatt" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
 
 ui_print "Unmounting /system..."
 umount /system
