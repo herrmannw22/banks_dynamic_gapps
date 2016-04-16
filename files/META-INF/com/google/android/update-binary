@@ -26,11 +26,66 @@ ui_print "*************************"
 ui_print "BaNkS Dynamic GApps 6.x.x"
 ui_print "*************************"
 
-ui_print "Forcing recovery to SELinux permissive..."
+# Set SELinux in recovery to permissive for more compatibility
 setenforce 0
+
+is_mounted() {
+  if [ ! -z "$2" ]; then
+    cat /proc/mounts | grep $1 | grep $2, >/dev/null
+  else
+    cat /proc/mounts | grep $1 >/dev/null
+  fi
+  return $?
+}
+toolbox_mount() {
+  RW=rw
+  if [ ! -z "$2" ]; then
+    RW=$2
+  fi
+
+  DEV=
+  POINT=
+  FS=
+  for i in `cat /etc/fstab | grep "$1"`; do
+    if [ -z "$DEV" ]; then
+      DEV=$i
+    elif [ -z "$POINT" ]; then
+      POINT=$i
+    elif [ -z "$FS" ]; then
+      FS=$i
+      break
+    fi
+  done
+  if (! is_mounted $1 $RW); then mount -t $FS -o $RW $DEV $POINT; fi
+  if (! is_mounted $1 $RW); then mount -t $FS -o $RW,remount $DEV $POINT; fi
+
+  DEV=
+  POINT=
+  FS=
+  for i in `cat /etc/recovery.fstab | grep "$1"`; do
+    if [ -z "$POINT" ]; then
+      POINT=$i
+    elif [ -z "$FS" ]; then
+      FS=$i
+    elif [ -z "$DEV" ]; then
+      DEV=$i
+      break
+    fi
+  done
+  if [ "$FS" = "emmc" ]; then
+    if (! is_mounted $1 $RW); then mount -t ext4 -o $RW $DEV $POINT; fi
+    if (! is_mounted $1 $RW); then mount -t ext4 -o $RW,remount $DEV $POINT; fi
+    if (! is_mounted $1 $RW); then mount -t f2fs -o $RW $DEV $POINT; fi
+    if (! is_mounted $1 $RW); then mount -t f2fs -o $RW,remount $DEV $POINT; fi
+  else
+    if (! is_mounted $1 $RW); then mount -t $FS -o $RW $DEV $POINT; fi
+    if (! is_mounted $1 $RW); then mount -t $FS -o $RW,remount $DEV $POINT; fi
+  fi
+}
 
 ui_print "Mounting /system..."
 mount /system
+toolbox_mount /system
 
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 
@@ -69,10 +124,34 @@ rm -rf "/system/app/BrowserProviderProxy" "/system/app/PartnerBookmarksProvider"
 
 zipfile=$3
 
-set_perm() {
-  chown "$1:$2" "$4";
-  chmod "$3" "$4";
+ch_con() {
+  LD_LIBRARY_PATH=$systemlib /system/bin/toybox chcon -h u:object_r:system_file:s0 $1 1>/dev/null 2>/dev/null
+  LD_LIBRARY_PATH=$systemlib /system/toolbox chcon -h u:object_r:system_file:s0 $1 1>/dev/null 2>/dev/null
+  LD_LIBRARY_PATH=$systemlib /system/bin/toolbox chcon -h u:object_r:system_file:s0 $1 1>/dev/null 2>/dev/null
+  chcon -h u:object_r:system_file:s0 $1 1>/dev/null 2>/dev/null
+  LD_LIBRARY_PATH=$systemlib /system/bin/toybox chcon u:object_r:system_file:s0 $1 1>/dev/null 2>/dev/null
+  LD_LIBRARY_PATH=$systemlib /system/toolbox chcon u:object_r:system_file:s0 $1 1>/dev/null 2>/dev/null
+  LD_LIBRARY_PATH=$systemlib /system/bin/toolbox chcon u:object_r:system_file:s0 $1 1>/dev/null 2>/dev/null
+  chcon u:object_r:system_file:s0 $1 1>/dev/null 2>/dev/null
 }
+ch_con_ext() {
+  LD_LIBRARY_PATH=$systemlib /system/bin/toybox chcon $2 $1 1>/dev/null 2>/dev/null
+  LD_LIBRARY_PATH=$systemlib /system/toolbox chcon $2 $1 1>/dev/null 2>/dev/null
+  LD_LIBRARY_PATH=$systemlib /system/bin/toolbox chcon $2 $1 1>/dev/null 2>/dev/null
+  chcon $2 $1 1>/dev/null 2>/dev/null
+}
+set_perm() {
+  chown $1.$2 $4
+  chown $1:$2 $4
+  chmod $3 $4
+  ch_con $4
+  ch_con_ext $4 $5
+}
+
+# Link /system/bin/toolbox to /system/toolbox
+cat /system/bin/toolbox > /system/toolbox
+chmod 0755 /system/toolbox
+ch_con /system/toolbox
 
 ui_print "Installing Dynamic GApps..."
 unzip -o "$zipfile" "system/*" -d /
@@ -107,22 +186,25 @@ set_metadata_recursive() {
 
 ui_print "Setting permissions..."
 # Change pittpatt folders to root:shell per Google Factory Settings
-find "/system/vendor/pittpatt" -type d -exec chown 0.2000 '{}' \;
+find "/system/vendor/pittpatt" -type d -exec chown 0.2000 '{}' \; 1>/dev/null 2>/dev/null
 # Set metadata
-set_metadata_recursive "/system/addon.d" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/etc/permissions" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/etc/preferred-apps" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/etc/sysconfig" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "system/etc/updatecmds" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/framework" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/priv-app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/usr/srec" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/vendor/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/vendor/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
-set_metadata_recursive "/system/vendor/pittpatt" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0
+set_metadata_recursive "/system/addon.d" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/etc/permissions" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/etc/preferred-apps" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/etc/sysconfig" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "system/etc/updatecmds" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/framework" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/priv-app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/usr/srec" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/vendor/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/vendor/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+set_metadata_recursive "/system/vendor/pittpatt" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1>/dev/null 2>/dev/null
+
+# Cleanup
+rm -f /system/toolbox
 
 ui_print "Unmounting /system..."
 umount /system
