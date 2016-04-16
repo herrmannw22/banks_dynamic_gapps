@@ -15,19 +15,21 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-# Define variables & functions________________________________________________________________________________________________________________________________________
 outfd=$2
 ui_print() {
   echo -n -e "ui_print $1\n" >> /proc/self/fd/$outfd
   echo -n -e "ui_print\n" >> /proc/self/fd/$outfd
 }
 
-zipfile=$3
+ui_print "*************************"
+ui_print "BaNkS Dynamic GApps 6.x.x"
+ui_print "*************************"
 
-set_perm() {
-  chown "$1:$2" "$4";
-  chmod "$3" "$4";
-}
+ui_print "Forcing recovery to SELinux permissive..."
+setenforce 0
+
+ui_print "Mounting /system..."
+mount /system
 
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 
@@ -36,7 +38,46 @@ rom_build_prop=/system/build.prop
 system_sdk=$(file_getprop $rom_build_prop "ro.build.version.sdk")
 gapps_sdk=23
 
+ui_print "Checking if GApps are compatible with your system..."
+$(ui_print "You need a sdk version of '$gapps_sdk' or greater...")
+if [ "$system_sdk" -ge "$gapps_sdk" ]; then
+  $(ui_print "Your sdk version is '$system_sdk', GApps are compatible...")
+  ui_print "Continuing install..."
+else
+  $(ui_print "Your sdk version is '$system_sdk', GApps are not compatible...")
+  ui_print "Aborting install..."
+  umount /system
+  exit 1
+fi
+
 arch=$(file_getprop $rom_build_prop "ro.product.cpu.abi=")
+
+ui_print "Setting system lib path..."
+# Set system lib path
+if (echo "$arch" | grep -qi "arm64"); then
+  systemlib=/system/lib64
+elif (echo "$arch" | grep -qi "x86_64"); then
+  systemlib=/system/lib64
+else
+  systemlib=/system/lib
+fi
+$(ui_print "Path '$systemlib' is set...")
+
+ui_print "Removing conflicting apks..."
+rm -rf "/system/app/BrowserProviderProxy" "/system/app/PartnerBookmarksProvider" "/system/app/Provision" "/system/app/QuickSearchBox" "/system/priv-app/BrowserProviderProxy" "/system/priv-app/PartnerBookmarksProvider" "/system/priv-app/Provision" "/system/priv-app/QuickSearchBox"
+
+zipfile=$3
+
+set_perm() {
+  chown "$1:$2" "$4";
+  chmod "$3" "$4";
+}
+
+ui_print "Installing Dynamic GApps..."
+unzip -o "$zipfile" "system/*" -d /
+unzip -o "$zipfile" "dynamic/*" -d /tmp
+set_perm 0 0 0777 /tmp/dynamic/dynamic.sh
+/tmp/dynamic/dynamic.sh
 
 set_metadata_recursive() {
   LD_LIBRARY_PATH=$systemlib;
@@ -62,48 +103,6 @@ set_metadata_recursive() {
     shift 2;
   done;
 }
-# Start the installation______________________________________________________________________________________________________________________________________________
-ui_print "*************************"
-ui_print "BaNkS Dynamic GApps 6.x.x"
-ui_print "*************************"
-
-ui_print "Forcing recovery to SELinux permissive..."
-setenforce 0
-
-ui_print "Mounting /system..."
-mount /system
-
-ui_print "Checking if GApps are compatible with your system..."
-$(ui_print "You need a sdk version of '$gapps_sdk' or greater...")
-if [ "$system_sdk" -ge "$gapps_sdk" ]; then
-  $(ui_print "Your sdk version is '$system_sdk', GApps are compatible...")
-  ui_print "Continuing install..."
-else
-  $(ui_print "Your sdk version is '$system_sdk', GApps are not compatible...")
-  ui_print "Aborting install..."
-  umount /system
-  exit 1
-fi
-
-ui_print "Setting system lib path..."
-# Set system lib path
-if (echo "$arch" | grep -qi "arm64"); then
-  systemlib=/system/lib64
-elif (echo "$arch" | grep -qi "x86_64"); then
-  systemlib=/system/lib64
-else
-  systemlib=/system/lib
-fi
-$(ui_print "Path '$systemlib' is set...")
-
-ui_print "Removing conflicting apks..."
-rm -rf "/system/app/BrowserProviderProxy" "/system/app/PartnerBookmarksProvider" "/system/app/Provision" "/system/app/QuickSearchBox" "/system/priv-app/BrowserProviderProxy" "/system/priv-app/PartnerBookmarksProvider" "/system/priv-app/Provision" "/system/priv-app/QuickSearchBox"
-
-ui_print "Installing Dynamic GApps..."
-unzip -o "$zipfile" "system/*" -d /
-unzip -o "$zipfile" "dynamic/*" -d /tmp
-set_perm 0 0 0777 /tmp/dynamic/dynamic.sh
-/tmp/dynamic/dynamic.sh
 
 ui_print "Setting permissions..."
 # Change pittpatt folders to root:shell per Google Factory Settings
