@@ -18,8 +18,8 @@
 
 outfd=$2
 ui_print() {
-  echo -n -e "ui_print $1\n" >> /proc/self/fd/$outfd
-  echo -n -e "ui_print\n" >> /proc/self/fd/$outfd
+  echo "ui_print $1" > /proc/self/fd/$outfd
+  echo "ui_print" > /proc/self/fd/$outfd
 }
 
 ui_print "*************************"
@@ -95,12 +95,12 @@ system_sdk=$(file_getprop $rom_build_prop "ro.build.version.sdk")
 gapps_sdk=23
 
 ui_print "Checking if GApps are compatible with your system..."
-$(ui_print "You need a sdk version of '$gapps_sdk' or greater...")
+ui_print "You need a sdk version of $gapps_sdk or greater..."
 if [ "$system_sdk" -ge "$gapps_sdk" ]; then
-  $(ui_print "Your sdk version is '$system_sdk', GApps are compatible...")
+  ui_print "Your sdk version is $system_sdk, GApps are compatible..."
   ui_print "Continuing install..."
 else
-  $(ui_print "Your sdk version is '$system_sdk', GApps are not compatible...")
+  ui_print "Your sdk version is $system_sdk, GApps are not compatible..."
   ui_print "Aborting install..."
   umount /system
   exit 1
@@ -117,7 +117,7 @@ elif (echo "$arch" | grep -qi "x86_64"); then
 else
   systemlib=/system/lib
 fi
-$(ui_print "Path '$systemlib' is set...")
+ui_print "Path $systemlib is set..."
 
 ui_print "Removing conflicting apks..."
 rm -rf "/system/app/BrowserProviderProxy" "/system/app/PartnerBookmarksProvider" "/system/app/Provision" "/system/app/QuickSearchBox" "/system/priv-app/BrowserProviderProxy" "/system/priv-app/PartnerBookmarksProvider" "/system/priv-app/Provision" "/system/priv-app/QuickSearchBox"
