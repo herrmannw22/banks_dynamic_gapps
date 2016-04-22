@@ -98,11 +98,11 @@ cd "$GAPPSDIR"
 7za a -tzip -r "$ZIPNAME1" ./* 1> /dev/null 2>&1
 mv -f "$ZIPNAME1" "$TOOLSDIR"
 cd "$TOOLSDIR"
-java -Xmx2048m -jar signapk.jar -w certificate.pem key.pk8 "$ZIPNAME1" "$ZIPNAME1".signed
+java -Xmx2048m -jar signapk.jar -w testkey.x509.pem testkey.pk8 "$ZIPNAME1" "$ZIPNAME1".signed
 rm -f "$ZIPNAME1"
 zipadjust "$ZIPNAME1".signed "$ZIPNAME1".fixed 1> /dev/null 2>&1
 rm -f "$ZIPNAME1".signed
-java -Xmx2048m -jar minsignapk.jar certificate.pem key.pk8 "$ZIPNAME1".fixed "$ZIPNAME1"
+java -Xmx2048m -jar minsignapk.jar testkey.x509.pem testkey.pk8 "$ZIPNAME1".fixed "$ZIPNAME1"
 rm -f "$ZIPNAME1".fixed
 mv -f "$ZIPNAME1" "$FINALDIR"
 cp -f "$FINALDIR"/"$ZIPNAME1" "$FINALDIR"/"$ZIPNAME2"
