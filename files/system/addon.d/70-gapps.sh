@@ -56,12 +56,10 @@ cat <<EOF
   framework/com.google.widevine.software.drm.jar
   lib/libfacelock_jni.so
   lib/libfilterpack_facedetect.so
-  lib/libjni_keyboarddecoder.so
   lib/libjni_latinime.so
   lib/libjni_latinimegoogle.so
   lib64/libfacelock_jni.so
   lib64/libfilterpack_facedetect.so
-  lib64/libjni_keyboarddecoder.so
   lib64/libjni_latinime.so
   lib64/libjni_latinimegoogle.so
   priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
@@ -186,26 +184,14 @@ case "$1" in
       mkdir -p /system/app/FaceLock/lib/arm
       mkdir -p /system/app/LatinIME/lib/arm
       ln -sfn /system/lib/libfacelock_jni.so /system/app/FaceLock/lib/arm/libfacelock_jni.so
-      ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm/libjni_keyboarddecoder.so
       ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/arm/libjni_latinime.so
       ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm/libjni_latinimegoogle.so
     elif (echo "$arch" | grep -qi "arm64"); then
       mkdir -p /system/app/FaceLock/lib/arm64
       mkdir -p /system/app/LatinIME/lib/arm64
       ln -sfn /system/lib64/libfacelock_jni.so /system/app/FaceLock/lib/arm64/libfacelock_jni.so
-      ln -sfn /system/lib64/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm64/libjni_keyboarddecoder.so
       ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/arm64/libjni_latinime.so
       ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm64/libjni_latinimegoogle.so
-    elif (echo "$arch" | grep -i "x86" | grep -qiv "x86_64"); then
-      mkdir -p /system/app/LatinIME/lib/x86
-      ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/x86/libjni_keyboarddecoder.so
-      ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/x86/libjni_latinime.so
-      ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86/libjni_latinimegoogle.so
-    elif (echo "$arch" | grep -qi "x86_64"); then
-      mkdir -p /system/app/LatinIME/lib/x86_64
-      ln -sfn /system/lib64/libjni_keyboarddecoder.so /system/app/LatinIME/lib/x86_64/libjni_keyboarddecoder.so
-      ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/x86_64/libjni_latinime.so
-      ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86_64/libjni_latinimegoogle.so
     fi
   ;;
 esac

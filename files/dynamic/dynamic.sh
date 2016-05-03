@@ -55,10 +55,6 @@ elif (echo "$arch" | grep -qi "arm64"); then
   mkdir -p /system/vendor/lib64
   cp -rf $tmp_path/Libs/vendor/lib/* /system/vendor/lib
   cp -rf $tmp_path/Libs/vendor/lib64/* /system/vendor/lib64
-elif (echo "$arch" | grep -i "x86" | grep -qiv "x86_64"); then
-  cp -rf $tmp_path/Libs/libx86/* /system/lib
-elif (echo "$arch" | grep -qi "x86_64"); then
-  cp -rf $tmp_path/Libs/libx86_64/* /system/lib64
 fi
 
 # PrebuiltGmsCore
@@ -98,24 +94,12 @@ if (echo "$arch" | grep -qi "armeabi"); then
   mkdir -p /system/app/FaceLock/lib/arm
   mkdir -p /system/app/LatinIME/lib/arm
   ln -sfn /system/lib/libfacelock_jni.so /system/app/FaceLock/lib/arm/libfacelock_jni.so
-  ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm/libjni_keyboarddecoder.so
   ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/arm/libjni_latinime.so
   ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm/libjni_latinimegoogle.so
 elif (echo "$arch" | grep -qi "arm64"); then
   mkdir -p /system/app/FaceLock/lib/arm64
   mkdir -p /system/app/LatinIME/lib/arm64
   ln -sfn /system/lib64/libfacelock_jni.so /system/app/FaceLock/lib/arm64/libfacelock_jni.so
-  ln -sfn /system/lib64/libjni_keyboarddecoder.so /system/app/LatinIME/lib/arm64/libjni_keyboarddecoder.so
   ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/arm64/libjni_latinime.so
   ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm64/libjni_latinimegoogle.so
-elif (echo "$arch" | grep -i "x86" | grep -qiv "x86_64"); then
-  mkdir -p /system/app/LatinIME/lib/x86
-  ln -sfn /system/lib/libjni_keyboarddecoder.so /system/app/LatinIME/lib/x86/libjni_keyboarddecoder.so
-  ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/x86/libjni_latinime.so
-  ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86/libjni_latinimegoogle.so
-elif (echo "$arch" | grep -qi "x86_64"); then
-  mkdir -p /system/app/LatinIME/lib/x86_64
-  ln -sfn /system/lib64/libjni_keyboarddecoder.so /system/app/LatinIME/lib/x86_64/libjni_keyboarddecoder.so
-  ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/x86_64/libjni_latinime.so
-  ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/x86_64/libjni_latinimegoogle.so
 fi
