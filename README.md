@@ -1,6 +1,12 @@
 #BaNkS Dynamic GApps#
 #by BaNkS#
 
+**ABOUT:**
+* Dynamic and minimal GApps for arm, arm64, x86, and x86_64
+* Includes core Google syncing apks
+* Includes Google App, GoogleTTS, Facelock (arm and arm64 only), and Swypelibs for AOSP Keyboard (arm and arm64 only)
+* Nothing more and nothing less
+
 **HOW TO USE:**
 
 * Get into the base of this repo
