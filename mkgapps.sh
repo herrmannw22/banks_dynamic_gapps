@@ -70,6 +70,11 @@ ZIPNAME2TITLE=BANKS_GAPPS
 ZIPNAME2VERSION=6.XX
 ZIPNAME1="$ZIPNAME1TITLE"_"$ZIPNAME1VERSION"_"$ZIPNAME1DATE".zip
 ZIPNAME2="$ZIPNAME2TITLE"_"$ZIPNAME2VERSION".zip
+JAVAHEAP=2048m
+SIGNAPK=signapk.jar
+MINSIGNAPK=minsignapk.jar
+TESTKEYPEM=testkey.x509.pem 
+TESTKEYPK8=testkey.pk8
 
 dcapk() {
   TARGETDIR=$(realpath .)
@@ -81,7 +86,7 @@ dcapk() {
   rm -rf "${TARGETDIR:?}"/lib/
   mv -f "$TARGETAPK" "$TARGETAPK".orig
   zipalign -f -p 4 "$TARGETAPK".orig "$TARGETAPK"
-  rm -rf "$TARGETAPK".orig
+  rm -f "$TARGETAPK".orig
 }
 
 # Define beginning time
@@ -100,11 +105,11 @@ cd "$STAGINGDIR"
 7za a -tzip -x!placeholder -r "$ZIPNAME1" ./* 1> /dev/null 2>&1
 mv -f "$ZIPNAME1" "$TOOLSDIR"
 cd "$TOOLSDIR"
-java -Xmx2048m -jar signapk.jar -w testkey.x509.pem testkey.pk8 "$ZIPNAME1" "$ZIPNAME1".signed
+java -Xmx"$JAVAHEAP" -jar "$SIGNAPK" -w "$TESTKEYPEM" "$TESTKEYPK8" "$ZIPNAME1" "$ZIPNAME1".signed
 rm -f "$ZIPNAME1"
 zipadjust "$ZIPNAME1".signed "$ZIPNAME1".fixed 1> /dev/null 2>&1
 rm -f "$ZIPNAME1".signed
-java -Xmx2048m -jar minsignapk.jar testkey.x509.pem testkey.pk8 "$ZIPNAME1".fixed "$ZIPNAME1"
+java -Xmx"$JAVAHEAP" -jar "$MINSIGNAPK" "$TESTKEYPEM" "$TESTKEYPK8" "$ZIPNAME1".fixed "$ZIPNAME1"
 rm -f "$ZIPNAME1".fixed
 mv -f "$ZIPNAME1" "$FINALDIR"
 cp -f "$FINALDIR"/"$ZIPNAME1" "$FINALDIR"/"$ZIPNAME2"
