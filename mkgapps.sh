@@ -13,27 +13,27 @@
 # GNU General Public License for more details.
 
 # Pretty ascii art
-echo "._______.._______..__...._..___..._.._______................";
-echo "|.._....||..._...||..|..|.||...|.|.||.......|...............";
-echo "|.|_|...||..|_|..||...|_|.||...|_|.||.._____|...............";
-echo "|.......||.......||.......||......_||.|_____................";
-echo "|.._...|.|.......||.._....||.....|_.|_____..|...............";
-echo "|.|_|...||..._...||.|.|...||...._..|._____|.|...............";
-echo "|_______||__|.|__||_|..|__||___|.|_||_______|...............";
-echo ".______...__...__..__...._.._______..__...__..___..._______.";
-echo "|......|.|..|.|..||..|..|.||..._...||..|_|..||...|.|.......|";
-echo "|.._....||..|_|..||...|_|.||..|_|..||.......||...|.|.......|";
-echo "|.|.|...||.......||.......||.......||.......||...|.|.......|";
-echo "|.|_|...||_....._||.._....||.......||.......||...|.|......_|";
-echo "|.......|..|...|..|.|.|...||..._...||.||_||.||...|.|.....|_.";
-echo "|______|...|___|..|_|..|__||__|.|__||_|...|_||___|.|_______|";
-echo "._______.._______.._______.._______.._______................";
-echo "|.......||..._...||.......||.......||.......|...............";
-echo "|....___||..|_|..||...._..||...._..||.._____|...............";
-echo "|...|.__.|.......||...|_|.||...|_|.||.|_____................";
-echo "|...||..||.......||....___||....___||_____..|...............";
-echo "|...|_|.||..._...||...|....|...|....._____|.|...............";
-echo "|_______||__|.|__||___|....|___|....|_______|...............";
+echo "._______.._______..__...._..___..._.._______................"
+echo "|.._....||..._...||..|..|.||...|.|.||.......|..............."
+echo "|.|_|...||..|_|..||...|_|.||...|_|.||.._____|..............."
+echo "|.......||.......||.......||......_||.|_____................"
+echo "|.._...|.|.......||.._....||.....|_.|_____..|..............."
+echo "|.|_|...||..._...||.|.|...||...._..|._____|.|..............."
+echo "|_______||__|.|__||_|..|__||___|.|_||_______|..............."
+echo ".______...__...__..__...._.._______..__...__..___..._______."
+echo "|......|.|..|.|..||..|..|.||..._...||..|_|..||...|.|.......|"
+echo "|.._....||..|_|..||...|_|.||..|_|..||.......||...|.|.......|"
+echo "|.|.|...||.......||.......||.......||.......||...|.|.......|"
+echo "|.|_|...||_....._||.._....||.......||.......||...|.|......_|"
+echo "|.......|..|...|..|.|.|...||..._...||.||_||.||...|.|.....|_."
+echo "|______|...|___|..|_|..|__||__|.|__||_|...|_||___|.|_______|"
+echo "._______.._______.._______.._______.._______................"
+echo "|.......||..._...||.......||.......||.......|..............."
+echo "|....___||..|_|..||...._..||...._..||.._____|..............."
+echo "|...|.__.|.......||...|_|.||...|_|.||.|_____................"
+echo "|...||..||.......||....___||....___||_____..|..............."
+echo "|...|_|.||..._...||...|....|...|....._____|.|..............."
+echo "|_______||__|.|__||___|....|___|....|_______|..............."
 
 # Define paths && variables
 APPDIRS="dynamic/FaceLock/arm/app/FaceLock
@@ -59,8 +59,9 @@ APPDIRS="dynamic/FaceLock/arm/app/FaceLock
          system/priv-app/GoogleServicesFramework
          system/priv-app/HotwordEnrollment
          system/priv-app/Phonesky"
-TOOLSDIR=$(realpath .)/tools
 GAPPSDIR=$(realpath .)/files
+TOOLSDIR=$(realpath .)/tools
+STAGINGDIR=$(realpath .)/staging
 FINALDIR=$(realpath .)/out
 ZIPNAME1TITLE=BaNkS_Dynamic_GApps
 ZIPNAME1VERSION=6.x.x
@@ -71,8 +72,8 @@ ZIPNAME1="$ZIPNAME1TITLE"_"$ZIPNAME1VERSION"_"$ZIPNAME1DATE".zip
 ZIPNAME2="$ZIPNAME2TITLE"_"$ZIPNAME2VERSION".zip
 
 dcapk() {
-TARGETDIR=$(realpath .)
-TARGETAPK=$TARGETDIR/$(basename "$TARGETDIR").apk
+  TARGETDIR=$(realpath .)
+  TARGETAPK="$TARGETDIR"/$(basename "$TARGETDIR").apk
   unzip -q -o "$TARGETAPK" -d "$TARGETDIR" "lib/*"
   zip -q -d "$TARGETAPK" "lib/*"
   cd "$TARGETDIR"
@@ -87,15 +88,16 @@ TARGETAPK=$TARGETDIR/$(basename "$TARGETDIR").apk
 BEGIN=$(date +%s)
 
 # Begin the magic
-export PATH=$TOOLSDIR:$PATH
+export PATH="$TOOLSDIR":$PATH
+cp -rf "$GAPPSDIR"/* "$STAGINGDIR"
 
 for dirs in $APPDIRS; do
-  cd "$GAPPSDIR/${dirs}";
+  cd "$STAGINGDIR/${dirs}";
   dcapk 1> /dev/null 2>&1;
 done
 
-cd "$GAPPSDIR"
-7za a -tzip -r "$ZIPNAME1" ./* 1> /dev/null 2>&1
+cd "$STAGINGDIR"
+7za a -tzip -x!placeholder -r "$ZIPNAME1" ./* 1> /dev/null 2>&1
 mv -f "$ZIPNAME1" "$TOOLSDIR"
 cd "$TOOLSDIR"
 java -Xmx2048m -jar signapk.jar -w testkey.x509.pem testkey.pk8 "$ZIPNAME1" "$ZIPNAME1".signed
@@ -106,6 +108,8 @@ java -Xmx2048m -jar minsignapk.jar testkey.x509.pem testkey.pk8 "$ZIPNAME1".fixe
 rm -f "$ZIPNAME1".fixed
 mv -f "$ZIPNAME1" "$FINALDIR"
 cp -f "$FINALDIR"/"$ZIPNAME1" "$FINALDIR"/"$ZIPNAME2"
+cd "$STAGINGDIR"
+ls | grep -iv placeholder | xargs rm -rf
 
 # Define ending time
 END=$(date +%s)
