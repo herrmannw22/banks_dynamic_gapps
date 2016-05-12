@@ -47,6 +47,8 @@ APPDIRS="dynamic/FaceLock/arm/app/FaceLock
          dynamic/SetupWizard/tablet/priv-app/SetupWizard
          dynamic/Velvet/arm/priv-app/Velvet
          dynamic/Velvet/arm64/priv-app/Velvet
+         dynamic/Velvet/tv-arm/priv-app/Velvet
+         dynamic/Velvet/tv-x86/priv-app/Velvet
          dynamic/Velvet/x86/priv-app/Velvet
          system/app/ChromeBookmarksSyncAdapter
          system/app/GoogleCalendarSyncAdapter

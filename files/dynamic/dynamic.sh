@@ -89,6 +89,16 @@ elif (echo "$arch" | grep -qi "x86"); then
   cp -rf $tmp_path/Velvet/x86/* /system
 fi
 
+# Velvet for Android tv
+if (echo "$build_char" | grep -qi "tv"); then
+  rm -rf /system/priv-app/Velvet
+  if (echo "$arch" | grep -qi "arm"); then
+    cp -rf $tmp_path/Velvet/tv-arm/* /system
+  elif (echo "$arch" | grep -qi "x86"); then
+    cp -rf $tmp_path/Velvet/tv-x86/* /system
+  fi
+fi
+
 # Make required symbolic links
 if (echo "$arch" | grep -qi "armeabi"); then
   mkdir -p /system/app/FaceLock/lib/arm
