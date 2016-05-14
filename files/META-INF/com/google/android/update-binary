@@ -127,9 +127,24 @@ set_perm() {
 
 ui_print "Installing Dynamic GApps..."
 unzip -o "$zipfile" "system/*" -d /
-unzip -o "$zipfile" "dynamic/*" -d /tmp
-set_perm 0 0 0777 /tmp/dynamic/dynamic.sh
-/tmp/dynamic/dynamic.sh
+unzip -o "$zipfile" "facelock/*" -d /tmp
+set_perm 0 0 0777 /tmp/facelock/facelock.sh
+/tmp/facelock/facelock.sh
+unzip -o "$zipfile" "googletts/*" -d /tmp
+set_perm 0 0 0777 /tmp/googletts/googletts.sh
+/tmp/googletts/googletts.sh
+unzip -o "$zipfile" "libs/*" -d /tmp
+set_perm 0 0 0777 /tmp/libs/libs.sh
+/tmp/libs/libs.sh
+unzip -o "$zipfile" "prebuiltgmscore/*" -d /tmp
+set_perm 0 0 0777 /tmp/prebuiltgmscore/prebuiltgmscore.sh
+/tmp/prebuiltgmscore/prebuiltgmscore.sh
+unzip -o "$zipfile" "setupwizard/*" -d /tmp
+set_perm 0 0 0777 /tmp/setupwizard/setupwizard.sh
+/tmp/setupwizard/setupwizard.sh
+unzip -o "$zipfile" "velvet/*" -d /tmp
+set_perm 0 0 0777 /tmp/velvet/velvet.sh
+/tmp/velvet/velvet.sh
 
 set_metadata_recursive() {
   LD_LIBRARY_PATH=$systemlib;
