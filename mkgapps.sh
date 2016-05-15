@@ -42,7 +42,6 @@ APPDIRS="facelock/arm/app/FaceLock
          prebuiltgmscore/arm/priv-app/PrebuiltGmsCore
          prebuiltgmscore/arm64/priv-app/PrebuiltGmsCore
          prebuiltgmscore/x86/priv-app/PrebuiltGmsCore
-         prebuiltgmscore/x86_64/priv-app/PrebuiltGmsCore
          setupwizard/phone/priv-app/SetupWizard
          setupwizard/tablet/priv-app/SetupWizard
          velvet/arm/priv-app/Velvet
