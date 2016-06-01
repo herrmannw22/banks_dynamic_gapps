@@ -2,6 +2,7 @@
 #by BaNkS#
 
 **ABOUT:**
+
 * Dynamic and minimal GApps for arm, arm64, and x86
 * Includes core Google syncing apks
 * Includes Google App, GoogleTTS, Facelock (arm and arm64 only), and Swypelibs for AOSP Keyboard (arm and arm64 only)

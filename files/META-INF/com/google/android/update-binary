@@ -91,27 +91,16 @@ system_sdk=$(file_getprop $rom_build_prop "ro.build.version.sdk")
 gapps_sdk=23
 
 ui_print "Checking if GApps are compatible with your system..."
-ui_print "You need a sdk version of $gapps_sdk or greater..."
+ui_print "You need an SDK version of $gapps_sdk or greater..."
 if [ "$system_sdk" -ge "$gapps_sdk" ]; then
-  ui_print "Your sdk version is $system_sdk, GApps are compatible..."
+  ui_print "Your SDK version is $system_sdk, GApps are compatible..."
   ui_print "Continuing install..."
 else
-  ui_print "Your sdk version is $system_sdk, GApps are not compatible..."
+  ui_print "Your SDK version is $system_sdk, GApps are not compatible..."
   ui_print "Aborting install..."
   umount /system
   exit 1
 fi
-
-arch=$(file_getprop $rom_build_prop "ro.product.cpu.abi=")
-
-ui_print "Setting system lib path..."
-# Set system lib path
-if (echo "$arch" | grep -qi "arm64"); then
-  systemlib=/system/lib64
-else
-  systemlib=/system/lib
-fi
-ui_print "Path $systemlib is set..."
 
 ui_print "Removing conflicting apks..."
 rm -rf "/system/app/BrowserProviderProxy" "/system/app/PartnerBookmarksProvider" "/system/app/Provision" "/system/app/QuickSearchBox" "/system/priv-app/BrowserProviderProxy" "/system/priv-app/PartnerBookmarksProvider" "/system/priv-app/Provision" "/system/priv-app/QuickSearchBox"
@@ -119,8 +108,10 @@ rm -rf "/system/app/BrowserProviderProxy" "/system/app/PartnerBookmarksProvider"
 zipfile=$3
 
 set_perm() {
-  chown "$1:$2" "$4";
-  chmod "$3" "$4";
+  uid=$1; gid=$2; mod=$3;
+  shift 3;
+  chown $uid.$gid $*; chown $uid:$gid $*;
+  chmod $mod $*;
 }
 
 ui_print "Installing Dynamic GApps..."
@@ -144,49 +135,21 @@ unzip -o "$zipfile" "velvet/*" -d /tmp
 set_perm 0 0 0777 /tmp/velvet/velvet.sh
 /tmp/velvet/velvet.sh
 
-set_metadata_recursive() {
-  LD_LIBRARY_PATH=$systemlib;
-  dir="$1";
-  shift;
-  until [ ! "$2" ]; do
-    case $1 in
-      uid) chown -R $2 $dir;;
-      gid) chown -R :$2 $dir;;
-      dmode) find "$dir" -type d -exec chmod $2 {} +;;
-      fmode) find "$dir" -type f -exec chmod $2 {} +;;
-      capabilities) ;;
-      selabel)
-        for i in /system/bin/toybox /system/bin/toolbox; do
-          find "$dir" -exec $i chcon -h $2 {} +;
-          find "$dir" -exec $i chcon $2 {} +;
-        done;
-        find "$dir" -exec chcon -h $2 '{}' +;
-        find "$dir" -exec chcon $2 '{}' +;
-      ;;
-      *) ;;
-    esac;
-    shift 2;
+set_perm_recursive() {
+  uid=$1; gid=$2; dmod=$3; fmod=$4;
+  shift 4;
+  until [ ! "$1" ]; do
+    chown -R $uid.$gid $1; chown -R $uid:$gid $1;
+    find "$1" -type d -exec chmod $dmod {} +;
+    find "$1" -type f -exec chmod $fmod {} +;
+    shift;
   done;
 }
 
 ui_print "Setting permissions..."
 # Change pittpatt folders to root:shell per Google Factory Settings
-find "/system/vendor/pittpatt" -type d -exec chown 0.2000 '{}' \; 1> /dev/null 2>&1
-# Set metadata
-set_metadata_recursive "/system/addon.d" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/etc/permissions" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/etc/preferred-apps" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/etc/sysconfig" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "system/etc/updatecmds" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/framework" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/priv-app" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/usr/srec" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/vendor/lib" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/vendor/lib64" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
-set_metadata_recursive "/system/vendor/pittpatt" uid 0 gid 0 dmode 0755 fmode 0755 capabilities 0x0 selabel u:object_r:system_file:s0 1> /dev/null 2>&1
+find "/system/vendor/pittpatt" -type d -exec chown 0.2000 '{}' \;
+set_perm_recursive 0 0 755 755 "/system/addon.d" "/system/app" "/system/etc/permissions" "/system/etc/preferred-apps" "/system/etc/sysconfig" "system/etc/updatecmds" "/system/framework" "/system/lib" "/system/lib64" "/system/priv-app" "/system/usr/srec" "/system/vendor/lib" "/system/vendor/lib64" "/system/vendor/pittpatt"
 
 ui_print "Unmounting /system..."
 umount /system
