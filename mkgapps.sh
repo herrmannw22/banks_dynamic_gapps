@@ -60,10 +60,11 @@ APPDIRS="facelock/arm/app/FaceLock
          system/priv-app/GoogleServicesFramework
          system/priv-app/HotwordEnrollment
          system/priv-app/Phonesky"
-GAPPSDIR=$(realpath .)/files
-TOOLSDIR=$(realpath .)/tools
-STAGINGDIR=$(realpath .)/staging
-FINALDIR=$(realpath .)/out
+TARGETDIR=$(realpath .)
+GAPPSDIR="$TARGETDIR"/files
+TOOLSDIR="$TARGETDIR"/tools
+STAGINGDIR="$TARGETDIR"/staging
+FINALDIR="$TARGETDIR"/out
 ZIPNAME1TITLE=BaNkS_Dynamic_GApps
 ZIPNAME1VERSION=6.x.x
 ZIPNAME1DATE=$(date +%-m-%-e-%-y)_$(date +%H:%M)
@@ -71,14 +72,13 @@ ZIPNAME2TITLE=BANKS_GAPPS
 ZIPNAME2VERSION=6.XX
 ZIPNAME1="$ZIPNAME1TITLE"_"$ZIPNAME1VERSION"_"$ZIPNAME1DATE".zip
 ZIPNAME2="$ZIPNAME2TITLE"_"$ZIPNAME2VERSION".zip
-JAVAHEAP=2048m
+JAVAHEAP=3072m
 SIGNAPK="$TOOLSDIR"/signapk.jar
 MINSIGNAPK="$TOOLSDIR"/minsignapk.jar
 TESTKEYPEM="$TOOLSDIR"/testkey.x509.pem 
 TESTKEYPK8="$TOOLSDIR"/testkey.pk8
 
 dcapk() {
-  TARGETDIR=$(realpath .)
   TARGETAPK="$TARGETDIR"/$(basename "$TARGETDIR").apk
   unzip -q -o "$TARGETAPK" -d "$TARGETDIR" "lib/*"
   zip -q -d "$TARGETAPK" "lib/*"
