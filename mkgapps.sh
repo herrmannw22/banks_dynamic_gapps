@@ -79,6 +79,7 @@ TESTKEYPEM="$TOOLSDIR"/testkey.x509.pem
 TESTKEYPK8="$TOOLSDIR"/testkey.pk8
 
 dcapk() {
+  TARGETDIR=$(realpath .)
   TARGETAPK="$TARGETDIR"/$(basename "$TARGETDIR").apk
   unzip -q -o "$TARGETAPK" -d "$TARGETDIR" "lib/*"
   zip -q -d "$TARGETAPK" "lib/*"
