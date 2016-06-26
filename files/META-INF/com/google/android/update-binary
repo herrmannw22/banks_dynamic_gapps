@@ -22,9 +22,9 @@ ui_print() {
   echo "ui_print" > /proc/self/fd/$outfd
 }
 
-ui_print "*************************"
-ui_print "BaNkS Dynamic GApps 6.x.x"
-ui_print "*************************"
+ui_print "*******************"
+ui_print "BaNkS Dynamic GApps"
+ui_print "*******************"
 
 is_mounted() {
   if [ ! -z "$2" ]; then
