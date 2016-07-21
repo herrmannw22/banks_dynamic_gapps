@@ -22,9 +22,12 @@ ui_print() {
   echo "ui_print" > /proc/self/fd/$outfd
 }
 
-ui_print "*******************"
+gapps_ver=6.x.x
+
+ui_print "***********************************"
 ui_print "BaNkS Dynamic GApps"
-ui_print "*******************"
+ui_print "For Android version $gapps_ver only"
+ui_print "***********************************"
 
 is_mounted() {
   if [ ! -z "$2" ]; then
@@ -91,8 +94,8 @@ system_sdk=$(file_getprop $rom_build_prop "ro.build.version.sdk")
 gapps_sdk=23
 
 ui_print "Checking if GApps are compatible with your system..."
-ui_print "You need an SDK version of $gapps_sdk or greater..."
-if [ "$system_sdk" -ge "$gapps_sdk" ]; then
+ui_print "You need an SDK version of $gapps_sdk to proceed..."
+if [ "$system_sdk" -eq "$gapps_sdk" ]; then
   ui_print "Your SDK version is $system_sdk, GApps are compatible..."
   ui_print "Continuing install..."
 else
