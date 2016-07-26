@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # This file contains parts from the scripts taken from the Open GApps Project by mfonville.
 #
@@ -14,23 +14,23 @@
 
 # Pretty ascii art
 echo "._______.._______..__...._..___..._.._______................"
-echo "|.._....||..._...||..|..|.||...|.|.||.......|..............."
-echo "|.|_|...||..|_|..||...|_|.||...|_|.||.._____|..............."
-echo "|.......||.......||.......||......_||.|_____................"
+echo "|.._....||..._...||..\..|.||...|.|.||.......|..............."
+echo "|.|_|...||..| |..||...\_|.||...|_|.||.._____|..............."
+echo "|.......||..|_|..||.......||......_||.|_____................"
 echo "|.._...|.|.......||.._....||.....|_.|_____..|..............."
-echo "|.|_|...||..._...||.|.|...||...._..|._____|.|..............."
-echo "|_______||__|.|__||_|..|__||___|.|_||_______|..............."
+echo "|.|_|...||..._...||.|.\...||...._..|._____|.|..............."
+echo "|_______||__|.|__||_|..\__||___|.|_||_______|..............."
 echo ".______...__...__..__...._.._______..__...__..___..._______."
-echo "|......|.|..|.|..||..|..|.||..._...||..|_|..||...|.|.......|"
-echo "|.._....||..|_|..||...|_|.||..|_|..||.......||...|.|.......|"
-echo "|.|.|...||.......||.......||.......||.......||...|.|.......|"
-echo "|.|_|...||_....._||.._....||.......||.......||...|.|......_|"
-echo "|.......|..|...|..|.|.|...||..._...||.||_||.||...|.|.....|_."
-echo "|______|...|___|..|_|..|__||__|.|__||_|...|_||___|.|_______|"
+echo "|......\.|..|.|..||..\..|.||..._...||..\_/..||...|.|...____|"
+echo "|..__...||..|_|..||...\_|.||..| |..||.......||...|.|..|....."
+echo "|.|. \..||.......||.......||..|_|..||.......||...|.|..|....."
+echo "|.|__/..||_....._||.._....||.......||.......||...|.|..|....."
+echo "|.......|..|...|..|.|.\...||..._...||.||_||.||...|.|..|____."
+echo "|______/...|___|..|_|..\__||__|.|__||_|...|_||___|.|_______|"
 echo "._______.._______.._______.._______.._______................"
-echo "|.......||..._...||.......||.......||.......|..............."
-echo "|....___||..|_|..||...._..||...._..||.._____|..............."
-echo "|...|.__.|.......||...|_|.||...|_|.||.|_____................"
+echo "|.......||..._...||...._..||...._..||.......|..............."
+echo "|....___||..| |..||...| |.||...| |.||.._____|..............."
+echo "|...|.__.|..|_|..||...|_|.||...|_|.||.|_____................"
 echo "|...||..||.......||....___||....___||_____..|..............."
 echo "|...|_|.||..._...||...|....|...|....._____|.|..............."
 echo "|_______||__|.|__||___|....|___|....|_______|..............."
@@ -44,11 +44,6 @@ APPDIRS="facelock/arm/app/FaceLock
          prebuiltgmscore/x86/priv-app/PrebuiltGmsCore
          setupwizard/phone/priv-app/SetupWizard
          setupwizard/tablet/priv-app/SetupWizard
-         velvet/arm/priv-app/Velvet
-         velvet/arm64/priv-app/Velvet
-         velvet/tv-arm/priv-app/Velvet
-         velvet/tv-x86/priv-app/Velvet
-         velvet/x86/priv-app/Velvet
          system/app/ChromeBookmarksSyncAdapter
          system/app/GoogleCalendarSyncAdapter
          system/app/GoogleContactsSyncAdapter
@@ -59,7 +54,12 @@ APPDIRS="facelock/arm/app/FaceLock
          system/priv-app/GooglePartnerSetup
          system/priv-app/GoogleServicesFramework
          system/priv-app/HotwordEnrollment
-         system/priv-app/Phonesky"
+         system/priv-app/Phonesky
+         velvet/arm/priv-app/Velvet
+         velvet/arm64/priv-app/Velvet
+         velvet/tv-arm/priv-app/Velvet
+         velvet/tv-x86/priv-app/Velvet
+         velvet/x86/priv-app/Velvet"
 TARGETDIR=$(realpath .)
 GAPPSDIR="$TARGETDIR"/files
 TOOLSDIR="$TARGETDIR"/tools
@@ -67,7 +67,7 @@ STAGINGDIR="$TARGETDIR"/staging
 FINALDIR="$TARGETDIR"/out
 ZIPNAME1TITLE=banks_dynamic_gapps
 ZIPNAME1VERSION=6.x.x
-ZIPNAME1DATE=$(date +%Y%m%d)
+ZIPNAME1DATE=$(date +"%Y%m%d")
 ZIPNAME2TITLE=BANKS_GAPPS
 ZIPNAME2VERSION=6.XX
 ZIPNAME1="$ZIPNAME1TITLE"-"$ZIPNAME1VERSION"-"$ZIPNAME1DATE".zip
@@ -92,7 +92,7 @@ dcapk() {
 }
 
 # Define beginning time
-BEGIN=$(date +%s)
+BEGIN=$(date +"%s")
 
 # Begin the magic
 export PATH="$TOOLSDIR":$PATH
@@ -115,11 +115,11 @@ cp -f "$FINALDIR"/"$ZIPNAME1" "$FINALDIR"/"$ZIPNAME2"
 find "$STAGINGDIR"/* ! -name "placeholder" -exec rm -rf {} +
 
 # Define ending time
-END=$(date +%s)
+END=$(date +"%s")
 
 # All done
 echo " "
 echo "All done creating GApps!"
 echo "Total time elapsed: $(echo $(($END-$BEGIN)) | awk '{print int($1/60)"mins "int($1%60)"secs "}') ($(echo "$END - $BEGIN" | bc) seconds)"
-echo "Completed GApp zips are located in the "$FINALDIR" directory"
+echo "Completed GApps zips are located in the "$FINALDIR" directory"
 cd
