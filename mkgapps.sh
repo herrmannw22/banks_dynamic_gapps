@@ -65,13 +65,10 @@ GAPPSDIR="$TARGETDIR"/files
 TOOLSDIR="$TARGETDIR"/tools
 STAGINGDIR="$TARGETDIR"/staging
 FINALDIR="$TARGETDIR"/out
-ZIPNAME1TITLE=banks_dynamic_gapps
-ZIPNAME1VERSION=6.x.x
-ZIPNAME1DATE=$(date +"%Y%m%d")
-ZIPNAME2TITLE=BANKS_GAPPS
-ZIPNAME2VERSION=6.XX
-ZIPNAME1="$ZIPNAME1TITLE"-"$ZIPNAME1VERSION"-"$ZIPNAME1DATE".zip
-ZIPNAME2="$ZIPNAME2TITLE"_"$ZIPNAME2VERSION".zip
+ZIPTITLE=banks_dynamic_gapps
+ZIPVERSION=6.x.x
+ZIPDATE=$(date +"%Y%m%d")
+ZIPNAME="$ZIPTITLE"-"$ZIPVERSION"-"$ZIPDATE".zip
 JAVAHEAP=3072m
 SIGNAPK="$TOOLSDIR"/signapk.jar
 MINSIGNAPK="$TOOLSDIR"/minsignapk.jar
@@ -103,15 +100,14 @@ for dirs in $APPDIRS; do
   dcapk 1> /dev/null 2>&1;
 done
 
-7za a -tzip -x!placeholder -r "$STAGINGDIR"/"$ZIPNAME1" "$STAGINGDIR"/./* 1> /dev/null 2>&1
-java -Xmx"$JAVAHEAP" -jar "$SIGNAPK" -w "$TESTKEYPEM" "$TESTKEYPK8" "$STAGINGDIR"/"$ZIPNAME1" "$STAGINGDIR"/"$ZIPNAME1".signed
-rm -f "$STAGINGDIR"/"$ZIPNAME1"
-zipadjust "$STAGINGDIR"/"$ZIPNAME1".signed "$STAGINGDIR"/"$ZIPNAME1".fixed 1> /dev/null 2>&1
+7za a -tzip -x!placeholder -r "$STAGINGDIR"/"$ZIPNAME" "$STAGINGDIR"/./* 1> /dev/null 2>&1
+java -Xmx"$JAVAHEAP" -jar "$SIGNAPK" -w "$TESTKEYPEM" "$TESTKEYPK8" "$STAGINGDIR"/"$ZIPNAME" "$STAGINGDIR"/"$ZIPNAME".signed
+rm -f "$STAGINGDIR"/"$ZIPNAME"
+zipadjust "$STAGINGDIR"/"$ZIPNAME".signed "$STAGINGDIR"/"$ZIPNAME".fixed 1> /dev/null 2>&1
 rm -f "$STAGINGDIR"/"$ZIPNAME1".signed
-java -Xmx"$JAVAHEAP" -jar "$MINSIGNAPK" "$TESTKEYPEM" "$TESTKEYPK8" "$STAGINGDIR"/"$ZIPNAME1".fixed "$STAGINGDIR"/"$ZIPNAME1"
-rm -f "$STAGINGDIR"/"$ZIPNAME1".fixed
-mv -f "$STAGINGDIR"/"$ZIPNAME1" "$FINALDIR"
-cp -f "$FINALDIR"/"$ZIPNAME1" "$FINALDIR"/"$ZIPNAME2"
+java -Xmx"$JAVAHEAP" -jar "$MINSIGNAPK" "$TESTKEYPEM" "$TESTKEYPK8" "$STAGINGDIR"/"$ZIPNAME".fixed "$STAGINGDIR"/"$ZIPNAME"
+rm -f "$STAGINGDIR"/"$ZIPNAME".fixed
+mv -f "$STAGINGDIR"/"$ZIPNAME" "$FINALDIR"
 find "$STAGINGDIR"/* ! -name "placeholder" -exec rm -rf {} +
 
 # Define ending time
@@ -121,5 +117,5 @@ END=$(date +"%s")
 echo " "
 echo "All done creating GApps!"
 echo "Total time elapsed: $(echo $(($END-$BEGIN)) | awk '{print int($1/60)"mins "int($1%60)"secs "}') ($(echo "$END - $BEGIN" | bc) seconds)"
-echo "Completed GApps zips are located in the "$FINALDIR" directory"
+echo "Completed GApps zip is located in the "$FINALDIR" directory"
 cd

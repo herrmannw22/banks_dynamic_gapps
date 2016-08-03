@@ -12,9 +12,8 @@
 
 * Get into the base of this repo
 * . mkgapps.sh
-* Script will decompress all apks, zipalign all apks, zip, and sign the completed GApp packages
+* Script will decompress all apks, zipalign all apks, zip, and sign the completed GApps package
 * Completed GApp zips will be in the out directory
-* Both zips are the same as one zip needs to have a static name for Dirty Unicorns ROM OTA purposes
 
 **PREREQUISITES:**
 
