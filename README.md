@@ -13,7 +13,7 @@
 * Get into the base of this repo
 * . mkgapps.sh
 * Script will decompress all apks, zipalign all apks, zip, and sign the completed GApps package
-* Completed GApp zips will be in the out directory
+* Completed GApps zip will be in the out directory
 
 **PREREQUISITES:**
 
