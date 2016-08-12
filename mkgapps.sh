@@ -118,5 +118,5 @@ END=$(date +"%s")
 echo " "
 echo "All done creating GApps!"
 echo "Total time elapsed: $(echo $(($END-$BEGIN)) | awk '{print int($1/60)"mins "int($1%60)"secs "}') ($(echo "$END - $BEGIN" | bc) seconds)"
-echo "Completed GApps zip is located in the "$FINALDIR" directory"
+echo "Completed GApps zip is located in $FINALDIR"
 cd
