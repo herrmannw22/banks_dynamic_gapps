@@ -12,7 +12,6 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-# Pretty ascii art
 echo "._______.._______..__...._..___..._.._______................"
 echo "|.._....||..._...||..\..|.||...|.|.||.......|..............."
 echo "|.|_|...||..| |..||...\_|.||...|_|.||.._____|..............."
@@ -35,7 +34,7 @@ echo "|...||..||.......||....___||....___||_____..|..............."
 echo "|...|_|.||..._...||...|....|...|....._____|.|..............."
 echo "|_______||__|.|__||___|....|___|....|_______|..............."
 
-# Define paths && variables
+# Define paths & variables
 APPDIRS="facelock/arm/app/FaceLock
          googletts/arm/app/GoogleTTS
          googletts/x86/app/GoogleTTS
@@ -75,13 +74,14 @@ MINSIGNAPK="$TOOLSDIR"/minsignapk.jar
 TESTKEYPEM="$TOOLSDIR"/testkey.x509.pem 
 TESTKEYPK8="$TOOLSDIR"/testkey.pk8
 
+# Decompression function for apks
 dcapk() {
   TARGETDIR=$(realpath .)
   TARGETAPK="$TARGETDIR"/$(basename "$TARGETDIR").apk
-  unzip -q -o "$TARGETAPK" -d "$TARGETDIR" "lib/*"
-  zip -q -d "$TARGETAPK" "lib/*"
+  unzip -qo "$TARGETAPK" -d "$TARGETDIR" "lib/*"
+  zip -qd "$TARGETAPK" "lib/*"
   cd "$TARGETDIR"
-  zip -q -r -D -Z store -b "$TARGETDIR" "$TARGETAPK" "lib/"
+  zip -qrDZ store -b "$TARGETDIR" "$TARGETAPK" "lib/"
   rm -rf "${TARGETDIR:?}"/lib/
   mv -f "$TARGETAPK" "$TARGETAPK".orig
   zipalign -f -p 4 "$TARGETAPK".orig "$TARGETAPK"
@@ -91,7 +91,7 @@ dcapk() {
 # Define beginning time
 BEGIN=$(date +"%s")
 
-# Begin the magic
+# Start making GApps zip
 export PATH="$TOOLSDIR":$PATH
 cp -rf "$GAPPSDIR"/* "$STAGINGDIR"
 
@@ -100,20 +100,21 @@ for dirs in $APPDIRS; do
   dcapk 1> /dev/null 2>&1;
 done
 
-7za a -tzip -x!placeholder -r "$STAGINGDIR"/"$ZIPNAME" "$STAGINGDIR"/./* 1> /dev/null 2>&1
-java -Xmx"$JAVAHEAP" -jar "$SIGNAPK" -w "$TESTKEYPEM" "$TESTKEYPK8" "$STAGINGDIR"/"$ZIPNAME" "$STAGINGDIR"/"$ZIPNAME".signed
-rm -f "$STAGINGDIR"/"$ZIPNAME"
-zipadjust "$STAGINGDIR"/"$ZIPNAME".signed "$STAGINGDIR"/"$ZIPNAME".fixed 1> /dev/null 2>&1
-rm -f "$STAGINGDIR"/"$ZIPNAME".signed
-java -Xmx"$JAVAHEAP" -jar "$MINSIGNAPK" "$TESTKEYPEM" "$TESTKEYPK8" "$STAGINGDIR"/"$ZIPNAME".fixed "$STAGINGDIR"/"$ZIPNAME"
-rm -f "$STAGINGDIR"/"$ZIPNAME".fixed
-mv -f "$STAGINGDIR"/"$ZIPNAME" "$FINALDIR"
-find "$STAGINGDIR"/* ! -name "placeholder" -exec rm -rf {} +
+cd "$STAGINGDIR"
+zip -qr9 "$ZIPNAME" ./* -x "placeholder"
+java -Xmx"$JAVAHEAP" -jar "$SIGNAPK" -w "$TESTKEYPEM" "$TESTKEYPK8" "$ZIPNAME" "$ZIPNAME".signed
+rm -f "$ZIPNAME"
+zipadjust "$ZIPNAME".signed "$ZIPNAME".fixed 1> /dev/null 2>&1
+rm -f "$ZIPNAME".signed
+java -Xmx"$JAVAHEAP" -jar "$MINSIGNAPK" "$TESTKEYPEM" "$TESTKEYPK8" "$ZIPNAME".fixed "$ZIPNAME"
+rm -f "$ZIPNAME".fixed
+mv -f "$ZIPNAME" "$FINALDIR"
+ls | grep -iv "placeholder" | xargs rm -rf
 
 # Define ending time
 END=$(date +"%s")
 
-# All done
+# Done
 echo " "
 echo "All done creating GApps!"
 echo "Total time elapsed: $(echo $(($END-$BEGIN)) | awk '{print int($1/60)"mins "int($1%60)"secs "}') ($(echo "$END - $BEGIN" | bc) seconds)"
