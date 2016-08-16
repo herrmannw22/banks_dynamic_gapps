@@ -30,7 +30,6 @@ prod_dev=$(file_getprop $rom_build_prop "ro.product.device")
 
 list_files() {
 cat <<EOF
-  app/ChromeBookmarksSyncAdapter/ChromeBookmarksSyncAdapter.apk
   app/FaceLock/FaceLock.apk
   app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk

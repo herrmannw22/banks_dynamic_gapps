@@ -43,7 +43,6 @@ APPDIRS="facelock/arm/app/FaceLock
          prebuiltgmscore/x86/priv-app/PrebuiltGmsCore
          setupwizard/phone/priv-app/SetupWizard
          setupwizard/tablet/priv-app/SetupWizard
-         system/app/ChromeBookmarksSyncAdapter
          system/app/GoogleCalendarSyncAdapter
          system/app/GoogleContactsSyncAdapter
          system/priv-app/GoogleBackupTransport
