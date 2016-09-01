@@ -55,8 +55,6 @@ APPDIRS="facelock/arm/app/FaceLock
          system/priv-app/Phonesky
          velvet/arm/priv-app/Velvet
          velvet/arm64/priv-app/Velvet
-         velvet/tv-arm/priv-app/Velvet
-         velvet/tv-x86/priv-app/Velvet
          velvet/x86/priv-app/Velvet"
 TARGETDIR=$(realpath .)
 GAPPSDIR="$TARGETDIR"/files
