@@ -81,7 +81,7 @@ dcapk() {
   zip -qrDZ store -b "$TARGETDIR" "$TARGETAPK" "lib/"
   rm -rf "${TARGETDIR:?}"/lib/
   mv -f "$TARGETAPK" "$TARGETAPK".orig
-  zipalign -f -p 4 "$TARGETAPK".orig "$TARGETAPK"
+  zipalign -fp 4 "$TARGETAPK".orig "$TARGETAPK"
   rm -f "$TARGETAPK".orig
 }
 
@@ -112,8 +112,8 @@ ls | grep -iv "placeholder" | xargs rm -rf
 END=$(date +"%s")
 
 # Done
-echo " "
+clear
 echo "All done creating GApps!"
 echo "Total time elapsed: $(echo $(($END-$BEGIN)) | awk '{print int($1/60)"mins "int($1%60)"secs "}') ($(echo "$END - $BEGIN" | bc) seconds)"
 echo "Completed GApps zip is located in $FINALDIR"
-cd
+cd ../
