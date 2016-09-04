@@ -24,7 +24,6 @@ arch=$(file_getprop $rom_build_prop "ro.product.cpu.abi=")
 # FaceLock
 if (echo "$arch" | grep -qi "arm"); then
   cp -rf $tmp_path/facelock/arm/* /system
-  cp -rf $tmp_path/facelock/vendor/* /system/vendor
 fi
 
 # Cleanup

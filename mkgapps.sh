@@ -45,7 +45,11 @@ APPDIRS="facelock/arm/app/FaceLock
          setupwizard/tablet/priv-app/SetupWizard
          system/app/GoogleCalendarSyncAdapter
          system/app/GoogleContactsSyncAdapter
+         system/app/GoogleExtShared
+         system/app/GooglePrintRecommendationService
+         system/app/GoogleVrCore
          system/priv-app/GoogleBackupTransport
+         system/priv-app/GoogleExtServices
          system/priv-app/GoogleFeedback
          system/priv-app/GoogleLoginService
          system/priv-app/GoogleOneTimeInitializer
@@ -62,7 +66,7 @@ TOOLSDIR="$TARGETDIR"/tools
 STAGINGDIR="$TARGETDIR"/staging
 FINALDIR="$TARGETDIR"/out
 ZIPTITLE=banks_dynamic_gapps
-ZIPVERSION=6.x.x
+ZIPVERSION=7.x.x_beta
 ZIPDATE=$(date +"%Y%m%d")
 ZIPNAME="$ZIPTITLE"-"$ZIPVERSION"-"$ZIPDATE".zip
 JAVAHEAP=3072m

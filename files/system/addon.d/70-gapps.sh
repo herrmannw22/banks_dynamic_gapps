@@ -33,35 +33,34 @@ cat <<EOF
   app/FaceLock/FaceLock.apk
   app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
+  app/GoogleExtShared/GoogleExtShared.apk
+  app/GooglePrintRecommendationService/GooglePrintRecommendationService.apk
+  app/GoogleVrCore/GoogleVrCore.apk
   app/GoogleTTS/GoogleTTS.apk
   etc/permissions/com.google.android.camera.experimental2015.xml
-  etc/permissions/com.google.android.camera2.xml
   etc/permissions/com.google.android.dialer.support.xml
   etc/permissions/com.google.android.maps.xml
   etc/permissions/com.google.android.media.effects.xml
   etc/permissions/com.google.android.pano.v1.xml
+  etc/permissions/com.google.android.tv.installed.xml
   etc/permissions/com.google.widevine.software.drm.xml
   etc/preferred-apps/google.xml
   etc/sysconfig/google.xml
   etc/sysconfig/google_build.xml
+  etc/sysconfig/google_vr_build.xml
   etc/sysconfig/whitelist_com.android.omadm.service.xml
-  etc/updatecmds/google_generic_update.txt
   framework/com.google.android.camera.experimental2015.jar
-  framework/com.google.android.camera2.jar
   framework/com.google.android.dialer.support.jar
   framework/com.google.android.maps.jar
   framework/com.google.android.media.effects.jar
   framework/com.google.android.pano.v1.jar
   framework/com.google.widevine.software.drm.jar
-  lib/libfacelock_jni.so
+  lib/libfacenet.so
   lib/libfilterpack_facedetect.so
-  lib/libjni_latinime.so
-  lib/libjni_latinimegoogle.so
-  lib64/libfacelock_jni.so
+  lib64/libfacenet.so
   lib64/libfilterpack_facedetect.so
-  lib64/libjni_latinime.so
-  lib64/libjni_latinimegoogle.so
   priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
+  priv-app//GoogleExtServices.apk
   priv-app/GoogleFeedback/GoogleFeedback.apk
   priv-app/GoogleLoginService/GoogleLoginService.apk
   priv-app/GoogleOneTimeInitializer/GoogleOneTimeInitializer.apk
@@ -127,16 +126,6 @@ cat <<EOF
   usr/srec/en-US/wordlist.syms
   vendor/lib/libfrsdk.so
   vendor/lib64/libfrsdk.so
-  vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.8/landmark_group_meta_data.bin
-  vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.8/left_eye-y0-yi45-p0-pi45-r0-ri20.lg_32-tree7-wmd.bin
-  vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.8/nose_base-y0-yi45-p0-pi45-r0-ri20.lg_32-tree7-wmd.bin
-  vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.8/right_eye-y0-yi45-p0-pi45-r0-ri20.lg_32-3-tree7-wmd.bin
-  vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/head-y0-yi45-p0-pi45-r0-ri30.4a-v24-tree7-2-wmd.bin
-  vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/head-y0-yi45-p0-pi45-rn30-ri30.5-v24-tree7-2-wmd.bin
-  vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/head-y0-yi45-p0-pi45-rp30-ri30.5-v24-tree7-2-wmd.bin
-  vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/pose-r.8.1.bin
-  vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/pose-y-r.8.1.bin
-  vendor/pittpatt/models/recognition/face.face.y0-y0-71-N-tree_7-wmd.bin
 EOF
 }
 
@@ -181,16 +170,10 @@ case "$1" in
     # Make required symbolic links
     if (echo "$arch" | grep -qi "armeabi"); then
       mkdir -p /system/app/FaceLock/lib/arm
-      mkdir -p /system/app/LatinIME/lib/arm
-      ln -sfn /system/lib/libfacelock_jni.so /system/app/FaceLock/lib/arm/libfacelock_jni.so
-      ln -sfn /system/lib/libjni_latinime.so /system/app/LatinIME/lib/arm/libjni_latinime.so
-      ln -sfn /system/lib/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm/libjni_latinimegoogle.so
+      ln -sfn /system/lib/libfacenet.so /system/app/FaceLock/lib/arm/libfacenet.so
     elif (echo "$arch" | grep -qi "arm64"); then
       mkdir -p /system/app/FaceLock/lib/arm64
-      mkdir -p /system/app/LatinIME/lib/arm64
-      ln -sfn /system/lib64/libfacelock_jni.so /system/app/FaceLock/lib/arm64/libfacelock_jni.so
-      ln -sfn /system/lib64/libjni_latinime.so /system/app/LatinIME/lib/arm64/libjni_latinime.so
-      ln -sfn /system/lib64/libjni_latinimegoogle.so /system/app/LatinIME/lib/arm64/libjni_latinimegoogle.so
+      ln -sfn /system/lib64/libfacenet.so /system/app/FaceLock/lib/arm64/libfacenet.so
     fi
   ;;
 esac

@@ -5,7 +5,7 @@
 
 * Dynamic and minimal GApps for arm, arm64, and x86
 * Includes core Google syncing apks
-* Includes Google App, GoogleTTS, Facelock (arm and arm64 only), and Swypelibs for AOSP Keyboard (arm and arm64 only)
+* Includes Google App, GoogleTTS, Facelock (arm and arm64 only)
 * Nothing more and nothing less
 
 **HOW TO USE:**
@@ -18,7 +18,7 @@
 **PREREQUISITES:**
 
 * A full Linux system with an Android build system setup
-* Java 7 or higher
+* OpenJDK 8
 * realpath binary "sudo apt-get install realpath"
 
 **CREDITS:**

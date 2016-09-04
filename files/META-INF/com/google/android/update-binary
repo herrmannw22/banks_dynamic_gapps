@@ -22,7 +22,7 @@ ui_print() {
   echo "ui_print" > /proc/self/fd/$outfd
 }
 
-gapps_ver=6.x.x
+gapps_ver=7.x.x
 
 ui_print "***********************************"
 ui_print "BaNkS Dynamic GApps"
@@ -91,7 +91,7 @@ file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 rom_build_prop=/system/build.prop
 
 system_sdk=$(file_getprop $rom_build_prop "ro.build.version.sdk")
-gapps_sdk=23
+gapps_sdk=24
 
 ui_print "Checking if GApps are compatible with your system..."
 ui_print "You need an SDK version of $gapps_sdk to proceed..."
@@ -150,9 +150,7 @@ set_perm_recursive() {
 }
 
 ui_print "Setting permissions..."
-# Change pittpatt folders to root:shell per Google Factory Settings
-find "/system/vendor/pittpatt" -type d -exec chown 0.2000 '{}' \;
-set_perm_recursive 0 0 755 644 "/system/app" "/system/etc/permissions" "/system/etc/preferred-apps" "/system/etc/sysconfig" "system/etc/updatecmds" "/system/framework" "/system/lib" "/system/lib64" "/system/priv-app" "/system/usr/srec" "/system/vendor/lib" "/system/vendor/lib64" "/system/vendor/pittpatt"
+set_perm_recursive 0 0 755 644 "/system/app" "/system/etc/permissions" "/system/etc/preferred-apps" "/system/etc/sysconfig" "/system/framework" "/system/lib" "/system/lib64" "/system/priv-app" "/system/usr/srec" "/system/vendor/lib" "/system/vendor/lib64"
 set_perm_recursive 0 0 755 755 "/system/addon.d"
 
 ui_print "Unmounting /system..."
