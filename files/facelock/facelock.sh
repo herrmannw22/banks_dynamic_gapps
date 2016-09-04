@@ -26,5 +26,27 @@ if (echo "$arch" | grep -qi "arm"); then
   cp -rf $tmp_path/facelock/arm/* /system
 fi
 
+# Libs
+if (echo "$arch" | grep -qi "armeabi"); then
+  cp -rf $tmp_path/facelock/lib/* /system/lib
+  mkdir -p /system/vendor/lib
+  cp -rf $tmp_path/facelock/vendor/lib/* /system/vendor/lib
+elif (echo "$arch" | grep -qi "arm64"); then
+  cp -rf $tmp_path/facelock/lib64/* /system/lib64
+  mkdir -p /system/vendor/lib
+  mkdir -p /system/vendor/lib64
+  cp -rf $tmp_path/facelock/vendor/lib/* /system/vendor/lib
+  cp -rf $tmp_path/facelock/vendor/lib64/* /system/vendor/lib64
+fi
+
+# Make required symbolic links
+if (echo "$arch" | grep -qi "armeabi"); then
+  mkdir -p /system/app/FaceLock/lib/arm
+  ln -sfn /system/lib/libfacenet.so /system/app/FaceLock/lib/arm/libfacenet.so
+elif (echo "$arch" | grep -qi "arm64"); then
+  mkdir -p /system/app/FaceLock/lib/arm64
+  ln -sfn /system/lib64/libfacenet.so /system/app/FaceLock/lib/arm64/libfacenet.so
+fi
+
 # Cleanup
 rm -rf /tmp/facelock
