@@ -125,6 +125,9 @@ set_perm 0 0 0777 /tmp/facelock/facelock.sh
 unzip -o "$zipfile" "googletts/*" -d /tmp
 set_perm 0 0 0777 /tmp/googletts/googletts.sh
 /tmp/googletts/googletts.sh
+unzip -o "$zipfile" "keyboard/*" -d /tmp
+set_perm 0 0 0777 /tmp/keyboard/keyboard.sh
+/tmp/keyboard/keyboard.sh
 unzip -o "$zipfile" "prebuiltgmscore/*" -d /tmp
 set_perm 0 0 0777 /tmp/prebuiltgmscore/prebuiltgmscore.sh
 /tmp/prebuiltgmscore/prebuiltgmscore.sh
