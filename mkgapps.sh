@@ -45,8 +45,6 @@ APPDIRS="facelock/arm/app/FaceLock
          setupwizard/tablet/priv-app/SetupWizard
          system/app/GoogleCalendarSyncAdapter
          system/app/GoogleContactsSyncAdapter
-         system/app/GoogleExtShared
-         system/app/GooglePrintRecommendationService
          system/app/GoogleVrCore
          system/priv-app/GoogleBackupTransport
          system/priv-app/GoogleExtServices

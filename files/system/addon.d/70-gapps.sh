@@ -33,8 +33,6 @@ cat <<EOF
   app/FaceLock/FaceLock.apk
   app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
-  app/GoogleExtShared/GoogleExtShared.apk
-  app/GooglePrintRecommendationService/GooglePrintRecommendationService.apk
   app/GoogleVrCore/GoogleVrCore.apk
   app/GoogleTTS/GoogleTTS.apk
   etc/permissions/com.google.android.camera.experimental2015.xml
