@@ -48,13 +48,11 @@ APPDIRS="facelock/arm/app/FaceLock
          system/app/GoogleExtShared
          system/app/GooglePrintRecommendationService
          system/app/GoogleVrCore
-         system/priv-app/ConfigUpdater
          system/priv-app/GoogleBackupTransport
          system/priv-app/GoogleExtServices
          system/priv-app/GoogleFeedback
          system/priv-app/GoogleLoginService
          system/priv-app/GoogleOneTimeInitializer
-         system/priv-app/GooglePackageInstaller
          system/priv-app/GooglePartnerSetup
          system/priv-app/GoogleServicesFramework
          system/priv-app/HotwordEnrollment

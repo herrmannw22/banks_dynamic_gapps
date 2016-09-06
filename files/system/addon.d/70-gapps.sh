@@ -63,13 +63,11 @@ cat <<EOF
   lib64/libfilterpack_facedetect.so
   lib64/libjni_latinime.so
   lib64/libjni_latinimegoogle.so
-  priv-app/ConfigUpdater/ConfigUpdater.apk
   priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
   priv-app//GoogleExtServices.apk
   priv-app/GoogleFeedback/GoogleFeedback.apk
   priv-app/GoogleLoginService/GoogleLoginService.apk
   priv-app/GoogleOneTimeInitializer/GoogleOneTimeInitializer.apk
-  priv-app/GooglePackageInstaller/GooglePackageInstaller.apk
   priv-app/GooglePartnerSetup/GooglePartnerSetup.apk
   priv-app/GoogleServicesFramework/GoogleServicesFramework.apk
   priv-app/HotwordEnrollment/HotwordEnrollment.apk
