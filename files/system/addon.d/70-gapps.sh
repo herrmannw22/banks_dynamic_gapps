@@ -62,7 +62,6 @@ cat <<EOF
   lib64/libjni_latinime.so
   lib64/libjni_latinimegoogle.so
   priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
-  priv-app//GoogleExtServices.apk
   priv-app/GoogleFeedback/GoogleFeedback.apk
   priv-app/GoogleLoginService/GoogleLoginService.apk
   priv-app/GoogleOneTimeInitializer/GoogleOneTimeInitializer.apk
