@@ -24,10 +24,9 @@ ui_print() {
 
 gapps_ver=6.x.x
 
-ui_print "***********************************"
-ui_print "BaNkS Dynamic GApps"
-ui_print "For Android version $gapps_ver only"
-ui_print "***********************************"
+ui_print "*********************************************"
+ui_print "BaNkS Dynamic GApps for Android version $gapps_ver"
+ui_print "*********************************************"
 
 is_mounted() {
   if [ ! -z "$2" ]; then
