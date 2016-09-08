@@ -46,6 +46,7 @@ APPDIRS="facelock/arm/app/FaceLock
          system/app/GoogleCalendarSyncAdapter
          system/app/GoogleContactsSyncAdapter
          system/app/GoogleVrCore
+         system/priv-app/ConfigUpdater
          system/priv-app/GoogleBackupTransport
          system/priv-app/GoogleFeedback
          system/priv-app/GoogleLoginService
