@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # This file contains parts from the scripts taken from the Open GApps Project by mfonville.
 #
