@@ -48,4 +48,6 @@
 * blkredstarV
 * Nobe1976 no1uknow
 * AlexLartsev19
+* Krash86
+* anestisb
 * Others I may have missed
