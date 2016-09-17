@@ -57,7 +57,7 @@ APPDIRS="facelock/arm/app/FaceLock
          velvet/arm/priv-app/Velvet
          velvet/arm64/priv-app/Velvet
          velvet/x86/priv-app/Velvet"
-TARGETDIR=$(realpath .)
+TARGETDIR=$(pwd)
 GAPPSDIR="$TARGETDIR"/files
 TOOLSDIR="$TARGETDIR"/tools
 STAGINGDIR="$TARGETDIR"/staging
@@ -74,7 +74,7 @@ TESTKEYPK8="$TOOLSDIR"/testkey.pk8
 
 # Decompression function for apks
 dcapk() {
-  TARGETDIR=$(realpath .)
+  TARGETDIR=$(pwd)
   TARGETAPK="$TARGETDIR"/$(basename "$TARGETDIR").apk
   unzip -qo "$TARGETAPK" -d "$TARGETDIR" "lib/*"
   zip -qd "$TARGETAPK" "lib/*"

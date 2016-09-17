@@ -20,7 +20,6 @@
 
 * A full Linux system with an Android build system setup
 * OpenJDK 8
-* realpath binary "sudo apt-get install realpath"
 
 **CREDITS:**
 
