@@ -124,6 +124,9 @@ set_perm 0 0 0777 /tmp/facelock/facelock.sh
 unzip -o "$zipfile" "googletts/*" -d /tmp
 set_perm 0 0 0777 /tmp/googletts/googletts.sh
 /tmp/googletts/googletts.sh
+unzip -o "$zipfile" "googlevrcore/*" -d /tmp
+set_perm 0 0 0777 /tmp/googlevrcore/googlevrcore.sh
+/tmp/googlevrcore/googlevrcore.sh
 unzip -o "$zipfile" "keyboard/*" -d /tmp
 set_perm 0 0 0777 /tmp/keyboard/keyboard.sh
 /tmp/keyboard/keyboard.sh

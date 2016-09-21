@@ -38,12 +38,13 @@ echo "|_______||__|.|__||___|....|___|....|_______|..............."
 APPDIRS="facelock/arm/app/FaceLock
          googletts/arm/app/GoogleTTS
          googletts/x86/app/GoogleTTS
+         googlevrcore/arm/app/GoogleVrCore
+         googlevrcore/arm64/app/GoogleVrCore
          prebuiltgmscore/arm/priv-app/PrebuiltGmsCore
          prebuiltgmscore/arm64/priv-app/PrebuiltGmsCore
          prebuiltgmscore/x86/priv-app/PrebuiltGmsCore
          system/app/GoogleCalendarSyncAdapter
          system/app/GoogleContactsSyncAdapter
-         system/app/GoogleVrCore
          system/priv-app/ConfigUpdater
          system/priv-app/GoogleBackupTransport
          system/priv-app/GoogleFeedback
